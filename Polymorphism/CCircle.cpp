@@ -13,6 +13,7 @@ CCircle::~CCircle()
     //dtor
 }
 
+// overriding
 void CCircle::showInfo(){
     cout << "CCircle's area : " << getArea() << endl;
     cout << "CCircle's girth : " << getGirth() << endl;

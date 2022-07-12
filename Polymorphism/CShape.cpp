@@ -13,7 +13,7 @@ CShape::~CShape()
     //dtor
 }
 
-// å®šç¾©æ™‚ä¸èƒ½åŠ  virtual
+// ©w¸q®É¤£¯à¥[ virtual
 void CShape::showInfo(){
     cout << "CShape's area : " << getArea() << endl;
     cout << "CShapes's girth : " << getGirth() << endl;
