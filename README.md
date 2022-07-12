@@ -141,54 +141,11 @@
   - 允許所有類別(class)存取
   
 e.g.
-```
-// Circle.h
 
-class Circle{
-private:
-    int radius;
-    int height;
-public:
-    // getter and setter
-    double getArea();
-    double getVolume();
-    void setRadius(int r);
-    void setHeight(int h);
-};
+[Circle.h](Encapsulation/Circle.h)
 
-double Circle::getArea(){
-    return radius * radius * 3.14;
-}
-double Circle::getVolume(){
-    return getArea() * height;
-}
-void Circle::setRadius(int r){
-    if(r > 0)
-        radius = r;
-}
-void Circle::setHeight(int h){
-    if(h > 0)
-        height = h;
-}
-```
-```
-// Circle.cpp
+[Circle.cpp](Encapsulation/Circle.cpp)
 
-#include <iostream>
-#include "Circle.h"
-using namespace std;
-
-int main(){
-    Circle c1;
-    c1.radius = 10;     // error
-    c1.height = 5       // error
-    c1.setRadius(10);
-    c1.setHeight(5);
-    cout << c1.getArea() << endl;
-    cout << c1.getVolume() << endl;
-    return 0;
-}
-```
 ---
 # 繼承(Inheritance)
 
@@ -210,85 +167,11 @@ int main(){
 (註: 成員包含變數成員和成員函式)
 
 e.g.
-```
-// myHeader.h
 
-class Shape{
-    double area;
-    double girth;
-protected:
-    void setArea(double a);
-    void setGirth(double g);
-public:
-    // ctor
-    Shape(){
-        area = 0;
-        girth = 0;
-    }
-    double getArea();
-    double getGirth();
-};
+[myHeader.h](Inheritance/myHeader.h)
 
-void Shape::setArea(double a){
-    if(a > 0)
-        area = a;
-}
-void Shape::setGirth(double g){
-    if(g > 0)
-        girth = g;
-}
+[main.cpp](Inheritance/main.cpp)
 
-double Shape::getArea(){
-    return area;
-}
-double Shape::getGirth(){
-    return girth;
-}
-
-// inheritance
-class Circle : public Shape{
-    int radius;
-    double area;
-public:
-    // ctor
-    Circle(){
-        radius = 0;
-    }
-    void setRadius(int r);
-};
-void Circle::setRadius(int r){
-    if(r > 0){
-        radius = r;
-        area = radius * radius * 3.14;
-        setArea(radius * radius * 3.14);  // 因為 base class 是 protected，若為 private 則會 error
-        setGirth(radius * 2 * 3.14);  // 因為 base class 是 protected，若為 private 則會 error
-    }
-}
-
-class Rectangle : public Shape{
-
-};
-```
-
-```
-// main.cpp
-
-#include <iostream>
-#include  "myHeader.h"
-using namespace std;
-
-int main(){
-    Circle c1;
-    c1.setRadius(10);
-    cout << c1.getArea() << endl;  // 因為已繼承 Shape 的 private 和 public 成員
-    cout << c1.getGirth() << endl;  // 因為已繼承 Shape 的 private 和 public 成員
-
-    Rectangle r1;
-    cout << r1.getArea() << endl;  // 因為已繼承 Shape 的 private 和 public 成員
-    cout << r1.getGirth() << endl;  // 因為已繼承 Shape 的 private 和 public 成員
-    return 0;
-}
-```
 ---
 # 建構函式(Constructor，下稱 ctor)
 #### 物件初始化的程式碼，可指定資料成員的初值，讓 user 可以不用進行完整的初值設定，
@@ -311,123 +194,12 @@ int main(){
 1. 在 IDE 中可讓 user 由參數名稱中判斷功能
 2. 避免重名時變數的 scope holes
 
-#### 
+e.g.
 
-```
-// myHeader2.h
+[myHeader2.h](Constructor/myHeader2.h)
 
-class Circle{
-    int radius;
-public:
-    /*
-    // ctor......(1)
-    Circle(){
-        radius = 0;
-    }
-    // ctor overloading......(2)
-    Circle(int r){
-        radius = 0;
-        setRadius(r);
-    }
-    */
+[main.cpp](Constructor/main.cpp)
 
-    // ctor......(3)，參數列指定預設值，其功能可取代(1)和(2)的 ctor，如果 user 有傳入 r，則會使用(2)進行指定；沒有則使用(1)進行初始化
-    Circle(int r = 0){
-        // this 在此處可省略，但當 Argument 與 object 裡的變數成員同名時，就可能會發生錯誤，如(4)
-        this->radius = 0;
-        setRadius(r);
-    }
-    /*
-    // ctor......(4)
-    Circle(int radius = 0){
-        // radius = 0;     // 此處應為 object 的變數成員，但沒寫 this 就會變成在存取 ctor 的 Argument
-        this->radius = 0;
-        setRadius(radius);      // 沒寫 this 變成 setRadius(0)，有寫 this 就會正常給值;
-    }
-    */
-    void setRadius(int r);
-    int getRadius();
-};
-
-void Circle::setRadius(int r){
-    if(r > 0)
-        radius = r;
-}
-int Circle::getRadius(){
-    return radius;
-}
-
-class Rectangle{
-    int length;
-    int width;
-public:
-    /*
-    // ctor......(1)
-    Rectangle(){
-        length = 0;
-        width = 0;
-    }
-    // ctor overloading......(2)
-    Rectangle(int a, int b){
-        length = 0;
-        width = 0;
-        setLength(a);
-        setWidth(b);
-    }
-    */
-    // 參數列指定預設值，其功能可取代上面兩個 ctor，如果 user 有傳入 r，則會使用(2)進行指定；沒有則使用(1)進行初始化
-    Rectangle(int a = 0, int b = 0){
-        length = 0;
-        width = 0;
-        setLength(a);
-        setWidth(b);
-    }
-    void setLength(int l);
-    void setWidth(int w);
-    int getLength();
-    int getWidth();
-};
-
-void Rectangle::setLength(int l){
-    if(l > 0)
-        length = l;
-}
-void Rectangle::setWidth(int w){
-    if(w > 0)
-        width = w;
-}
-
-int Rectangle::getLength(){
-    return length;
-}
-int Rectangle::getWidth(){
-    return width;
-}
-```
-
-```
-#include <iostream>
-#include "myHeader2.h"
-using namespace std;
-
-int main(){
-    Circle c1;  // 呼叫沒有參數列的 ctor
-    Circle c2(10);  // 呼叫有參數列的 ctor
-    cout << c1.getRadius() << endl;
-    cout << c2.getRadius() << endl;
-
-    Rectangle r1;
-    Rectangle r2(10, 10);
-    Rectangle r3(10);
-    cout << "r1.getLength() = " << r1.getLength() << endl;
-    cout << "r1.getWidth() = " << r1.getWidth() << endl;
-    cout << "r2.getLength() = " << r2.getLength() << endl;
-    cout << "r2.getWidth() = " << r2.getWidth() << endl;
-    cout << "r3.getLength() = " << r3.getLength() << endl;
-    cout << "r3.getWidth() = " << r3.getWidth() << endl;
-    return 0;
-}
-```
 ---
 # 多型(Polymorphism)和虛擬(virtual)函式
 
@@ -483,21 +255,61 @@ int main(){
 
 e.g. 
 
-[CShape.h](CShape.h)
+[CShape.h](Polymorphism/CShape.h)
 
-[CShape.cpp](CShape.cpp)
+[CShape.cpp](Polymorphism/CShape.cpp)
 
-[CCircle.h](CCircle.h)
+[CCircle.h](Polymorphism/CCircle.h)
 
-[CCircle.cpp](CCircle.cpp)
+[CCircle.cpp](Polymorphism/CCircle.cpp)
 
-[CRectangle.h](CRectangle.h)
+[CRectangle.h](Polymorphism/CRectangle.h)
 
-[CRectangle.cpp](CRectangle.cpp)
+[CRectangle.cpp](Polymorphism/CRectangle.cpp)
 
-[main.cpp](main.cpp)
+[main.cpp](Polymorphism/main.cpp)
+
 ---
 ## Polymorphism -- Subtyping(virtual)
+#### 名字指定為父類別的不同子類別實例，體現為繼承後的 Overriding，C++ 的實現為 virtual
+- 父類別
+> A. 宣告虛擬函式
+> > 在函式宣告敘述前加入 keyword virtual.
+> > e.g.
+> >
+> >     virtual void showInfo();    // declare
+> >
+> >     void Classname::showInfo(){ // define
+> >     }
+> B. 宣告虛擬解構函式(**一定要宣告**)
+> > 在 class dtor 前加入 keyword virtual.
+> > e.g.
+> >
+> >     virtual ~ClassName(){}
+- 子類別
+> A. Override 父類別宣告的虛擬函式
+> > 再次宣告及定義父類別中的虛擬函式
+> >
+> > e.g.
+> >
+> >     virtual void showInfo();    // declare
+> >
+> >     void Classname::showInfo(){ // define
+> >     }
+> B. 以指標或參考呼叫虛擬函式
+> > 執行子類別 override 的內容，指標使用 (->)，參考使用 (.)
+> >
+> > e.g.
+> >
+> > ```
+> > CCircle cc4;
+> > cc4.setRadius(100);
+> > csPtr = &cc4;
+> > csRef = cc4;
+> > csPtr->showInfo();
+> > csRef.showInfo();
+> > ```
+
 
 
 ---
