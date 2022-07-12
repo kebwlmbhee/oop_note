@@ -130,6 +130,13 @@
 ---
 # 封裝(Encapsulation)
 #### 讓特定的物件不能被外界存取，是開發者(developer)用來限制使用者(user)的存取權限的手段。一般來說，只讓使用者接觸到開發者設定的 function interface 以進行調用，而禁止其直接存取變數或 function implementation
+  
+e.g.
+
+[Circle.h](Encapsulation/Circle.h)
+
+[Circle.cpp](Encapsulation/Circle.cpp)
+
 
 實現方式: 使用 private, protected, public
 
@@ -139,15 +146,15 @@
   - 允許本類別(class)的子類別存取。
 - public
   - 允許所有類別(class)存取
-  
-e.g.
-
-[Circle.h](Encapsulation/Circle.h)
-
-[Circle.cpp](Encapsulation/Circle.cpp)
 
 ---
 # 繼承(Inheritance)
+### 繼承: 建立一個以現有的 class(父類別) 為基礎的新 class(子類別)
+e.g.
+
+[myHeader.h](Inheritance/myHeader.h)
+
+[main.cpp](Inheritance/main.cpp)
 
 - 子類別/衍生類別(Child class/Derived class): 繼承已有物件
 - 父類別/基礎類別(Parent class/Base class): 被繼承物件
@@ -166,15 +173,41 @@ e.g.
   
 (註: 成員包含變數成員和成員函式)
 
-e.g.
+### 繼承存取限制
+#### 子類別在宣告繼承父類別的時候，可以用存取修飾詞限制父類別的成員在子類別中的新存取層級。
 
-[myHeader.h](Inheritance/myHeader.h)
+> e.g.
+>>     class Circle : public Shape
+> e.g.
+>>     class Circle : protected Shape
+> e.g.
+>>     class Circle : private Shape
 
-[main.cpp](Inheritance/main.cpp)
+- private (上限改為 private)
+  - 子類別繼承的所有父類別成員皆為 private
+
+- protected (上限改為 protected，其餘固定)
+  - 在子類別中繼承自父類別的 private 與 protected 的成員不變，public 成員改為 protected。
+
+- public (上限為 public，其餘固定)
+  - 在子類別中繼承自父類別的所有成員等級均不變。
+
+|            | private | protected | public     |
+| ---------- | ------- | --------- | ---------- |
+| private    | private | private   | private    |
+| protected  | private | protected | protected  |
+| public     | private | protected | public     |
+
 
 ---
 # 建構函式(Constructor，下稱 ctor)
-#### 物件初始化的程式碼，可指定資料成員的初值，讓 user 可以不用進行完整的初值設定，
+### 建構函式: 實現物件初始化，可指定資料成員的初值，讓 user 可以不用進行完整的初值設定，
+
+e.g.
+
+[myHeader2.h](Constructor/myHeader2.h)
+
+[main.cpp](Constructor/main.cpp)
 
 與 function 類似，惟以下幾點需要注意
 - ctor 名稱須與 class 名稱相同(case sensitivity)
@@ -194,16 +227,35 @@ e.g.
 1. 在 IDE 中可讓 user 由參數名稱中判斷功能
 2. 避免重名時變數的 scope holes
 
-e.g.
+## Initialization List
+#### 不會有歧異性
+#### 不能使用 this pointer
 
-[myHeader2.h](Constructor/myHeader2.h)
-
-[main.cpp](Constructor/main.cpp)
+> e.g.
+>>     Circle(int r = 0) : radius(r){}
+> e.g
+>>     Rectangle(int length = 0, int width = 0) : length(length), width(width){}
 
 ---
 # 多型(Polymorphism)和虛擬(virtual)函式
 
-## 多型(Polymorphism): 父類別指標或參考的物件，因指派的物件不同而有不同的實現機制，並以此簡化實現機制的方法
+### 多型(Polymorphism): 父類別指標或參考的物件，因指派的物件不同而有不同的實現機制，並以此簡化實現機制的方法
+
+e.g. 
+
+[CShape.h](Polymorphism/CShape.h)
+
+[CShape.cpp](Polymorphism/CShape.cpp)
+
+[CCircle.h](Polymorphism/CCircle.h)
+
+[CCircle.cpp](Polymorphism/CCircle.cpp)
+
+[CRectangle.h](Polymorphism/CRectangle.h)
+
+[CRectangle.cpp](Polymorphism/CRectangle.cpp)
+
+[main.cpp](Polymorphism/main.cpp)
 
 ## is-a vs. has-a
 #### _兩者都是用來描述**類別與類別間的關係**_
@@ -238,79 +290,134 @@ e.g.
     > class Phone{
     >    Chip chip;
     > };
-## Polymorphism -- Dynamic/Runtime binding 
+## Polymorphism -- Dynamic/Runtime binding
 *指派(Assign): 子類別宣告的物件指派到父類別宣告的物件，反之則不可行。是物件的複製(copy-by-value)，不是多型的應用
-### _**子類別指派到父類別宣告 => 代父出征(O)**_
-### 父類別**不可**指派到子類別宣告 => 替子送死(X, error)
+### _**子類別指派到父類別 => 代父出征(O)**_
+### 父類別**不可**指派到子類別 => 替子送死(X, error)
 
-### Dynamic binding 實現依賴於 object-oriented 指標或引用的類型
+### Dynamic binding 實現依賴於 object 的指標或引用
 1. 指標(Pointer)
 2. 參考(Reference)
 3. 群體(Group)
 4. 參數(Parameter)
 
 ### 子類別內如果定義與父類別相同的成員函式
-1. 如果子類別沒有指派到父類別宣告，會執行子類別定義的成員函式
-2. 如果子類別指派到父類別宣告(使用 Polymorphism 宣告時)，仍會執行父類別的成員函式(除非使用 virtual keyword 才可以 override)
+1. 如果子類別沒有指派到父類別，會執行子類別定義的成員函式
+2. 如果子類別指派到父類別(使用 Polymorphism 宣告時)，仍會執行父類別的成員函式(除非使用 virtual keyword 才可以 override)
+
+## Polymorphism -- Subtyping(virtual)
+#### 父類別與子類別擁有相同的 function signature 及 return type，子類別指派至父類別後，仍能使用子類別實作的 function，體現為繼承後的 Overriding，C++ 使用 virtual 實現
+- 父類別
+
+  - A. 宣告虛擬函式
+  
+    > 在函式宣告敘述前加入 keyword virtual.
+    > e.g.
+    >
+    >     virtual void showInfo();    // declare in .h
+    >
+    >     void Classname::showInfo(){ // define in .cpp
+    >     }
+
+  - B. 宣告虛擬解構函式(**一定要宣告**)
+  
+    > 在 class dtor 前加入 keyword virtual.
+    > e.g.
+    >
+    >     virtual ~ClassName(){}
+- 子類別
+  - A. Override 父類別宣告的虛擬函式
+  
+    > 再次宣告及定義父類別中的虛擬函式
+    >
+    > e.g.
+    >
+    >     virtual void showInfo();    // declare in .h
+    >
+    >     void Classname::showInfo(){ // define in .cpp
+    >     }
+  - B. 以指標或參考呼叫虛擬函式
+    > 執行子類別 override 的內容，指標使用 (->)，參考使用 (.)
+    >
+    > e.g.
+    >
+    > ```
+    > CCircle cc4;
+    > cc4.setRadius(100);
+    > csPtr = &cc4;
+    > csRef = cc4;
+    > csPtr->showInfo();
+    > csRef.showInfo();
+    > ```
+    
+## Dynamic Casting
+#### 大原則: 父類別不能指派給子類別(不能替子送死)
+#### 當定義時為子類別，傳遞 Parameter 是父類別時，可以透過 Dynamic Casting 轉為原先定義時的子類別
+
+- A. 指標
+  > dynamic_cast<type*>(pointer)
+  > 
+  > 失敗時返回 NULL pointer
+  >
+  > e.g.
+  >
+  >     CCircle *ccPtr = dynamic_cast<CCircle *>(csPtr);
+
+- B. 參考
+  > 
+  > 失敗時拋出 Exception。
+  >
+  > dynamic_cast<type&>(reference)
+  >
+  > e.g.
+  >
+  > ```
+  > CCircle cc4;
+  > cc4.setRadius(100);
+  > csPtr = &cc4;
+  > csRef = cc4;
+  > csPtr->showInfo();
+  > csRef.showInfo();
+  > ```
+
+## 純虛函式(Pure Virtual Function)
+#### _**類別中若宣告或繼承了一個或多個純虛函式，此類別即為抽象類別。**_
+#### _**子類別一定要 override 父類別的純虛函式，否則子類別也會變成抽象 class。**_
 
 e.g. 
 
-[CShape.h](Polymorphism/CShape.h)
+[CShape.h](Pure%20Virtual%20Function/CShape.h)
 
-[CShape.cpp](Polymorphism/CShape.cpp)
+[CShape.cpp](Pure%20Virtual%20Function/CShape.cpp)
 
-[CCircle.h](Polymorphism/CCircle.h)
+[CCircle.h](Pure%20Virtual%20Function/CCircle.h)
 
-[CCircle.cpp](Polymorphism/CCircle.cpp)
+[CCircle.cpp](Pure%20Virtual%20Function/CCircle.cpp)
 
-[CRectangle.h](Polymorphism/CRectangle.h)
+[CRectangle.h](Pure%20Virtual%20Function/CRectangle.h)
 
-[CRectangle.cpp](Polymorphism/CRectangle.cpp)
+[CRectangle.cpp](Pure%20Virtual%20Function/CRectangle.cpp)
 
-[main.cpp](Polymorphism/main.cpp)
+[main.cpp](Pure%20Virtual%20Function/main.cpp)
 
----
-## Polymorphism -- Subtyping(virtual)
-#### 名字指定為父類別的不同子類別實例，體現為繼承後的 Overriding，C++ 的實現為 virtual
-- 父類別
-> A. 宣告虛擬函式
-> > 在函式宣告敘述前加入 keyword virtual.
-> > e.g.
-> >
-> >     virtual void showInfo();    // declare
-> >
-> >     void Classname::showInfo(){ // define
-> >     }
-> B. 宣告虛擬解構函式(**一定要宣告**)
-> > 在 class dtor 前加入 keyword virtual.
-> > e.g.
-> >
-> >     virtual ~ClassName(){}
-- 子類別
-> A. Override 父類別宣告的虛擬函式
-> > 再次宣告及定義父類別中的虛擬函式
-> >
-> > e.g.
-> >
-> >     virtual void showInfo();    // declare
-> >
-> >     void Classname::showInfo(){ // define
-> >     }
-> B. 以指標或參考呼叫虛擬函式
-> > 執行子類別 override 的內容，指標使用 (->)，參考使用 (.)
-> >
-> > e.g.
-> >
-> > ```
-> > CCircle cc4;
-> > cc4.setRadius(100);
-> > csPtr = &cc4;
-> > csRef = cc4;
-> > csPtr->showInfo();
-> > csRef.showInfo();
-> > ```
+(註: 僅修改 main.cpp, CShape.h, CShape.cpp，其餘檔案和 _多型(Polymorphism)和虛擬(virtual)函式_ 相同)
 
+- A. 宣告純虛擬函式
+  > 純虛擬函式只有宣告，沒有定義
+  >
+  > virtual type_name (parameter list) = 0;
+  > 
 
+- B. 抽象 class
+  >
+  > 1. 不可建立 object，但可建立及使用 object pointer or object reference
+  > 2. 可以做為實作多型的差別，單純做父類別讓子類別繼承
+  
+#### pure virtual function 是為了強迫子類別進行 override
+
+### Summary for virtual function
+- virtual function: 讓子類別決定要不要 override 父類別的 function，不 override 就會使用父類別的 function
+- pure virtual function: 強迫子類別 override virtual function，否則無法建立 object
 
 ---
 # Reference
