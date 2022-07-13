@@ -1,9 +1,10 @@
 # Outline
-- [物件(object)](#物件object)
-- [物件導向(object-oriented)](#物件導向object-oriented)
-- [類別(class)](#類別class)
-- [物件變數(object variable)](#物件變數object-variable)
-- [物件指標(object pointer)](#物件指標object-pointer)
+- [物件(Object)](#物件object)
+- [物件導向(Object-Oriented)](#物件導向object-oriented)
+- [類別(Class)](#類別class)
+- [Friend Class](#friend-class)
+- [物件變數(Object variable)](#物件變數object-variable)
+- [物件指標(Object Pointer)](#物件指標object-pointer)
 - [物件變數參考(Object Reference Variable)](#物件變數參考object-reference-variable)
 - [物件指標參考(Object Reference Pointer)](#物件指標參考object-reference-pointer)
 - [Overloading](#overloading)
@@ -13,17 +14,22 @@
 - [建構函式(Constructor)](#建構函式constructor下稱-ctor)
 - [Initialization List](#initialization-list)
 - [多型(Polymorphism)和虛擬(virtual)函式](#多型polymorphism和虛擬virtual函式)
+- TODO: [動態記憶體配置(Dynamic Memory Allocation)](#動態記憶體配置dynamic-memory-allocation)
+- TODO: [Inline function](#inline-function)
+- TODO: [模版(Template)](#模板template) 
+- TODO: [File I/O](#file-io)
+- TODO: [Exception & RTTI](#exception--rtti)
+- TODO: [STL(Standard Template Library)](#stlstandard-template-library)
 - [Reference](#Reference)
 
-
-# 物件(object)
+# 物件(Object)
 #### 一群**記憶體的集合**
 #### 擁有
 1. 資料成員(Attribute)
 2. 成員函式(Method)
 ---
 
-# 物件導向(object-oriented)
+# 物件導向(Object-Oriented)
 #### 除了儲存資料外，還能運算資料
 #### C 的 struct 只能儲存資料
 #### C++ 的 class 的型別使資料與運算的函式屬於同一個物件下的成員。
@@ -33,7 +39,7 @@
 2. 相同名稱的**成員函式**，但它運算的結果不一定一樣。
 ---
 
-# 類別(class)
+# 類別(Class)
 #### 一種型別，像 C++ 裡的 int 一樣
 #### **依照物件的需求進行開發設計**
 
@@ -45,8 +51,68 @@
 
 ### class 和 object 的差別: class 只是方法，object 是照著 class 這個方法所實際生成(實例化)的東西
 ---
+# Friend Class
+#### 前備知識: private, protected, public(參考[封裝(Encapsulation)](#封裝encapsulation))
+- Friend Class
+  - 如果 B_Class 宣告成 A_Class 的 friend class，則 B_Class 可以直接存取 A_Class 的所有成員(private, protected, public)
+  
+  ```
+  #include <iostream>
+  using namespace std;
 
-# 物件變數(object variable)
+  class ABC {   // A_Class
+  private:
+      char ch='A';
+  protected:
+      int num = 11;
+
+      friend class XYZ;
+  };
+  class XYZ {   // B_Class
+  public:
+      void show(ABC &obj){
+          cout << obj.ch << endl;   // can access cuz friend class
+          cout << obj.num << endl;  // can access cuz friend class
+      }
+  };
+  int main() {
+      ABC abc;
+      XYZ xyz;
+      xyz.show(abc);      // A
+                          // 11
+      return 0;
+  }
+  ```
+- Friend Function
+  - 如果 X_Function 宣告成 A_Class 的 friend function，則可以透過 X_Function 直接存取 A_Class 的所有成員(private, protected, public)
+  ```
+  #include <iostream>
+  using namespace std;
+
+  class ABC {   // A_Class
+  private:
+      char ch='A';
+  protected:
+      int num = 11;
+
+      friend void show(ABC &obj);   // X_Function
+  };
+
+  void show(ABC &obj){
+      cout << obj.ch << endl;   // can access cuz friend function
+      cout << obj.num << endl;  // can access cuz friend function
+  }
+
+  int main() {
+      ABC abc;
+      show(abc);          // A
+                          // 11
+      return 0;
+  }
+  ```
+---
+
+# 物件變數(Object Variable)
 - 宣告
 > 變數宣告時，環境會依照類別中的宣告來建立物件，並將物件的記憶體位址指派給變數。
 >>     ClassName objectName;
@@ -73,10 +139,11 @@
 >     ClassName objectName = function();    // function call
 
 ---
-# 物件指標(object pointer)
+# 物件指標(Object Pointer)
 - 宣告
 > 不直接指派
 >>     ClassName *pointerName;
+>>     pointerName = new ClassName;
 >
 > 直接指派(新增物件，使指標指向該物件)
 >>     ClassName *pointerName = new ClassName;
@@ -151,10 +218,8 @@ function signature: 參數順序，數量，型態，不包含 return type & val
 
 - Function Overloading
   ```
-  // Function Overloading
   #include <iostream>
   using namespace std;
-  
   
   void add(int a, int b)
   {
@@ -175,10 +240,9 @@ function signature: 參數順序，數量，型態，不包含 return type & val
   }
   ```
 - Constructor Overloading
-  - 參 [建構函式(Constructor)](#建構函式constructor下稱-ctor)
+  - 參 [建構函式(Constructor)](#建構函式constructor下稱-ctor)的範例
 - Operator Overloading
   ```
-  // Operator Overloading
   #include<iostream>
   using namespace std;
   
@@ -211,7 +275,6 @@ function signature: 參數順序，數量，型態，不包含 return type & val
 #### 允許子類別對 function 進行個別實作，替換父類別的 function，子類別 override 時，function signature 和回傳型別需與父類別相同
 
 ```
-// Function Overriding
 #include<iostream>
 using namespace std;
  
@@ -301,11 +364,11 @@ e.g.
 #### 子類別在宣告繼承父類別的時候，可以用存取修飾詞限制父類別的成員在子類別中的新存取層級。
 
 > e.g.
->>     class Circle : public Shape
+>>     class Circle : private Shape{};
 > e.g.
->>     class Circle : protected Shape
+>>     class Circle : protected Shape{};
 > e.g.
->>     class Circle : private Shape
+>>     class Circle : public Shape{};
 
 - private (上限改為 private)
   - 子類別繼承的所有父類別成員皆為 private
@@ -381,12 +444,12 @@ e.g.
 
 [main.cpp](Polymorphism/main.cpp)
 
-## is-a vs. has-a
+## Is-a vs. Has-a
 #### _兩者都是用來描述**類別與類別間的關係**_
 
 ### Note: is-a代表類別之間階層的父子關係。has-a代表類別之間的whole/part關係。
 
-- is-a(用於繼承): 子類別 is-a 父類別
+- Is-a(用於繼承): 子類別 is-a 父類別
 
 
     > e.g. Circle is-a Shape.
@@ -406,7 +469,7 @@ e.g.
     >
     > 你身上的手機是一個物件，是一個型別為智慧型手機的物件，也是一個型別為行動電話的物件，也是一個型別為電話的物件，也是一個型別為電子設備的物件。
 
-- has-a: 手機 has-a 晶片，e.g. Phone has-a Chip.(手機與晶片都是 object)
+- Has-a: 手機 has-a 晶片，e.g. Phone has-a Chip.(手機與晶片都是 object)
 
     > ```
     > class Chip{};
@@ -505,8 +568,8 @@ e.g.
   > ```
 
 ## 純虛函式(Pure Virtual Function)
-#### _**類別中若宣告或繼承了一個或多個純虛函式，此類別即為抽象類別。**_
-#### _**子類別一定要 override 父類別的純虛函式，否則子類別也會變成抽象 class。**_
+#### _**類別中若宣告或繼承了一個或多個純虛函式，此類別即為抽象類別(Abstract Class)。**_
+#### _**子類別一定要 override 父類別的純虛函式，否則子類別也會變成 Abstract class。**_
 
 e.g. 
 
@@ -524,7 +587,7 @@ e.g.
 
 [main.cpp](Pure%20Virtual%20Function/main.cpp)
 
-(註: 僅修改 main.cpp, CShape.h, CShape.cpp，其餘檔案和 _多型(Polymorphism)和虛擬(virtual)函式_ 的範例相同)
+(註: 僅修改 main.cpp, CShape.h, CShape.cpp，其餘檔案和[多型(Polymorphism)和虛擬(virtual)函式](#多型polymorphism和虛擬virtual函式)的範例相同)
 
 - A. 宣告純虛擬函式
   > 純虛擬函式只有宣告，沒有定義
@@ -532,16 +595,30 @@ e.g.
   > virtual type_name (parameter list) = 0;
   > 
 
-- B. 抽象 class
+- B. Abstract class
   >
   > 1. 不可建立 object，但可建立及使用 object pointer or object reference
   > 2. 可以做為實作多型的差別，單純做父類別讓子類別繼承
   
-#### pure virtual function 是為了強迫子類別進行 override
+#### Pure virtual function 是為了強迫子類別進行 override
 
 ### Summary for virtual function
 - virtual function: 讓子類別決定要不要 override 父類別的 function，不 override 就會使用父類別的 function
-- pure virtual function: 強迫子類別 override virtual function，否則無法建立 object
+- Pure virtual function: 強迫子類別 override virtual function，否則無法建立 object
+---
+# 動態記憶體配置(Dynamic Memory Allocation)
+---
+
+# Inline function
+
+# 模板(Template)
+
+# File I/O
+
+# Exception & RTTI
+
+# STL(Standard Template Library)
+#### [C++ STL 成員及用法](https://docs.google.com/spreadsheets/u/0/d/1cmD2xblurWh9j3DD7j_BeHqnXWa1xlovzXzSJg64I4A/pub?output=html)
 
 ---
 # Reference
