@@ -7,6 +7,7 @@
 - [物件變數參考(Object Reference Variable)](#物件變數參考object-reference-variable)
 - [物件指標參考(Object Reference Pointer)](#物件指標參考object-reference-pointer)
 - [Overloading](#overloading)
+- [Overriding](#overriding)
 - [封裝(Encapsulation)](#封裝encapsulation)
 - [繼承(Inheritance)](#繼承inheritance)
 - [建構函式(Constructor)](#建構函式constructor下稱-ctor)
@@ -145,11 +146,12 @@
 >     function(objectName)    // function call
 
 # Overloading
-#### 可以簡化函式，允許函式同名但有不同的 function signature，
-function signature: 參數順序，數量，型態
+#### 可以簡化函式，允許函式同名但有不同的 function signature
+function signature: 參數順序，數量，型態，不包含 return type & value
 
 - Function Overloading
   ```
+  // Function Overloading
   #include <iostream>
   using namespace std;
   
@@ -167,9 +169,8 @@ function signature: 參數順序，數量，型態
   // Driver code
   int main()
   {
-      add(10, 2);
-      add(5.3, 6.2);
-  
+      add(10, 2);       // 12
+      add(5.3, 6.2);    // 11.5
       return 0;
   }
   ```
@@ -177,6 +178,7 @@ function signature: 參數順序，數量，型態
   - 參 [建構函式(Constructor)](#建構函式constructor下稱-ctor)
 - Operator Overloading
   ```
+  // Operator Overloading
   #include<iostream>
   using namespace std;
   
@@ -201,9 +203,53 @@ function signature: 參數順序，數量，型態
   {
       Complex c1(10, 5), c2(2, 4);
       Complex c3 = c1 + c2;
-      c3.print();
+      c3.print();   // 12 + i9
   }
   ```
+---
+# Overriding
+#### 允許子類別對 function 進行個別實作，替換父類別的 function，子類別 override 時，function signature 和回傳型別需與父類別相同
+
+```
+// Function Overriding
+#include<iostream>
+using namespace std;
+ 
+class BaseClass
+{
+public:
+    virtual void Display()
+    {
+        cout << "\nThis is Display() method"
+                " of BaseClass";
+    }
+    void Show()
+    {
+        cout << "\nThis is Show() method "
+               "of BaseClass";
+    }
+};
+ 
+class DerivedClass : public BaseClass
+{
+public:
+    void Display()
+    {
+        cout << "\nThis is Display() method"
+               " of DerivedClass";
+    }
+};
+ 
+// Driver code
+int main()
+{
+    DerivedClass dr;
+    BaseClass &bs = dr;
+    bs.Display();             // This is Display() method of DerivedClass
+    bs.BaseClass::Display();  // This is Show() method of BaseClass
+    bs.Show();                // This is Display() method of BaseClass
+}
+```
 
 ---
 # 封裝(Encapsulation)
@@ -384,7 +430,7 @@ e.g.
 2. 如果子類別指派到父類別(使用 Polymorphism 宣告時)，仍會執行父類別的成員函式(除非使用 virtual keyword 才可以 override)
 
 ## Polymorphism -- Subtyping(virtual)
-#### 父類別與子類別擁有相同的 function signature 及 return type，子類別指派至父類別後，仍能使用子類別實作的 function，體現為繼承後的 Overriding，C++ 使用 virtual 實現
+#### 父類別與子類別擁有相同的 function signature 及 return type，子類別指派至父類別後，仍能使用子類別實作的 function，體現方式即為繼承後的 Overriding，C++ 使用 virtual 實現
 - 父類別
 
   - A. 宣告虛擬函式
