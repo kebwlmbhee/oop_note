@@ -1,3 +1,20 @@
+# Outline
+- [物件(object)](#物件object)
+- [物件導向(object-oriented)](#物件導向object-oriented)
+- [類別(class)](#類別class)
+- [物件變數(object variable)](#物件變數object-variable)
+- [物件指標(object pointer)](#物件指標object-pointer)
+- [物件變數參考(Object Reference Variable)](#物件變數參考object-reference-variable)
+- [物件指標參考(Object Reference Pointer)](#物件指標參考object-reference-pointer)
+- [Overloading](#overloading)
+- [封裝(Encapsulation)](#封裝encapsulation)
+- [繼承(Inheritance)](#繼承inheritance)
+- [建構函式(Constructor)](#建構函式constructor下稱-ctor)
+- [Initialization List](#initialization-list)
+- [多型(Polymorphism)和虛擬(virtual)函式](#多型polymorphism和虛擬virtual函式)
+- [Reference](#Reference)
+
+
 # 物件(object)
 #### 一群**記憶體的集合**
 #### 擁有
@@ -127,10 +144,71 @@
 > 
 >     function(objectName)    // function call
 
+# Overloading
+#### 可以簡化函式，允許函式同名但有不同的 function signature，
+function signature: 參數順序，數量，型態
+
+- Function Overloading
+  ```
+  #include <iostream>
+  using namespace std;
+  
+  
+  void add(int a, int b)
+  {
+    cout << "sum = " << (a + b);
+  }
+  
+  void add(double a, double b)
+  {
+      cout << endl << "sum = " << (a + b);
+  }
+  
+  // Driver code
+  int main()
+  {
+      add(10, 2);
+      add(5.3, 6.2);
+  
+      return 0;
+  }
+  ```
+- Constructor Overloading
+  - 參 [建構函式(Constructor)](#建構函式constructor下稱-ctor)
+- Operator Overloading
+  ```
+  #include<iostream>
+  using namespace std;
+  
+  class Complex {
+  private:
+      int real, imag;
+  public:
+      Complex(int r = 0, int i = 0) {real = r;   imag = i;}
+      
+      // This is automatically called when '+' is used with
+      // between two Complex objects
+      Complex operator + (Complex const &obj) {
+          Complex res;
+          res.real = real + obj.real;
+          res.imag = imag + obj.imag;
+          return res;
+      }
+      void print() { cout << real << " + i" << imag << '\n'; }
+  };
+  
+  int main()
+  {
+      Complex c1(10, 5), c2(2, 4);
+      Complex c3 = c1 + c2;
+      c3.print();
+  }
+  ```
+
 ---
 # 封裝(Encapsulation)
 #### 讓特定的物件不能被外界存取，是開發者(developer)用來限制使用者(user)的存取權限的手段。一般來說，只讓使用者接觸到開發者設定的 function interface 以進行調用，而禁止其直接存取變數或 function implementation
-  
+
 e.g.
 
 [Circle.h](Encapsulation/Circle.h)
@@ -400,7 +478,7 @@ e.g.
 
 [main.cpp](Pure%20Virtual%20Function/main.cpp)
 
-(註: 僅修改 main.cpp, CShape.h, CShape.cpp，其餘檔案和 _多型(Polymorphism)和虛擬(virtual)函式_ 相同)
+(註: 僅修改 main.cpp, CShape.h, CShape.cpp，其餘檔案和 _多型(Polymorphism)和虛擬(virtual)函式_ 的範例相同)
 
 - A. 宣告純虛擬函式
   > 純虛擬函式只有宣告，沒有定義
