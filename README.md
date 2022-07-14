@@ -14,7 +14,7 @@
 - [建構函式(Constructor)](#建構函式constructor下稱-ctor)
 - [Initialization List](#initialization-list)
 - [多型(Polymorphism)和虛擬(virtual)函式](#多型polymorphism和虛擬virtual函式)
-- TODO: [動態記憶體配置(Dynamic Memory Allocation)](#動態記憶體配置dynamic-memory-allocation)
+- [動態記憶體配置(Dynamic Memory Allocation)](#動態記憶體配置dynamic-memory-allocation)
 - TODO: [Inline function](#inline-function)
 - TODO: [模版(Template)](#模板template) 
 - TODO: [File I/O](#file-io)
@@ -552,7 +552,7 @@ e.g.
 
 - B. 參考
   > 
-  > 失敗時拋出 Exception。
+  > 失敗時拋出 bad_cast Exception。
   >
   > dynamic_cast<type&>(reference)
   >
@@ -607,15 +607,160 @@ e.g.
 - Pure virtual function: 強迫子類別 override virtual function，否則無法建立 object
 ---
 # 動態記憶體配置(Dynamic Memory Allocation)
+####
+- 靜態配置: 在 compile time 時決定變量的內存空間，一旦決定就不得再更改
+- 動態配置: 在 runtime 時依照預先編寫好的程式進行空間的分配，可依據指令隨時改變(通常在不確定使用者會輸入多少內容時使用)
+
+- C
+  - Allocate: malloc() (分配失敗返回 NULL pointer)
+    >     void *malloc(size_t size);
+
+  - Deallocate: free()
+    >     void free(void *ptr);
+    
+```
+#include <stdio.h>
+#include <stdlib.h>
+
+int main(){
+    printf(" ------- Variable ------- \n");
+    int *p =  (int *)malloc(sizeof(int));
+    if (p == NULL)    // 分配失敗則跳出
+        exit(-2);
+    *p = 1;
+    printf("%d\n", *p);
+    free(p);
+
+    printf("\n ------- 1D Array ------- \n");
+    int arrLen = 10;
+    int *dynArr = (int*)malloc(arrLen * sizeof(int));
+    if( dynArr == NULL ) {    // 分配失敗則跳出
+        exit(-2);
+    }
+
+    for (int i = 0; i < arrLen; ++i) {    // access
+        dynArr[i] = i;
+        printf("%d ", dynArr[i]);
+    }
+    printf("\n");
+
+    free(dynArr);
+
+    printf("\n ------- 2D Array ------- \n");
+    int arrLen1 = 5, arrLen2 = 10;
+    int *dynArr2 = (int*)malloc(arrLen1 * arrLen2 * sizeof(int));
+    if( dynArr2 == NULL ) {    // 分配失敗則跳出
+      exit(-2);
+    }
+
+    for (int i = 0; i < arrLen1; ++i) {   // access
+      for (int j = 0; j < arrLen2; ++j) {
+        int index = i * arrLen2 + j;
+        dynArr[index] = index;
+        printf("%d ", dynArr[index]);
+      }
+      printf("\n");
+    }
+
+    free(dynArr2);
+    return 0;
+}
+```
+- C++
+  - Allocate: new()
+    >     void *operator new(size_t size);
+  - Deallocate: delete()
+    >     void operator delete(void* ptr);
+```
+#include <iostream>
+using namespace std;
+
+int main(){
+    cout << " ------- Variable ------- " << endl;
+    try{
+        int *p = new int;
+        *p = 1;
+        int *q = new int(5);
+
+        cout << *p << endl;
+        cout << *q << endl;
+
+        delete(p);
+        delete(q);
+    }
+    catch(bad_alloc &b){    // memory allocation failure
+        cout << "bad_alloc Exception" << endl;
+        exit(-2);
+    }
+
+    cout << " ------- 1D Array ------- " << endl;
+    int arrLen = 10;
+    try{
+        int *dynArr = new int[10];
+        for (int i = 0; i < arrLen; ++i) {    // access
+            dynArr[i] = i;
+            cout << dynArr[i] << " ";
+        }
+        cout << endl;
+        delete []dynArr;
+    }
+    catch(bad_alloc &){    // memory allocation failure
+        cout << "bad_alloc Exception" << endl;
+        exit(-2);
+    }
+
+    cout << " ------- 2D Array ------- " << endl;
+    int row = 5, col = 10;
+    try{
+        int **dynArr2 = new int*[row];      // Allocate row first
+        for(int i = 0; i < row; ++i) {      // Allocate col
+            dynArr2[i] = new int[col];
+        }
+
+        for(int i = 0; i < row; ++i){
+            for(int j = 0; j < col; ++j){
+                int index = i * col + j;
+                dynArr2[i][j] = index;
+                cout << dynArr2[i][j] << " ";
+            }
+            cout << endl;
+        }
+
+        for(int i = 0; i < row; ++i){       // Deallocate col first
+            delete []dynArr2[i];
+        }
+        delete []dynArr2;                   // Deallocate row
+    }
+    catch(bad_alloc &){     // memory allocation failure
+        cout << "bad_alloc Exception" << endl;
+        exit(-2);
+    }
+  return 0;
+}
+```
+
+### malloc/free vs. new/delete
+- 計算占用內存: malloc 需使用 sizeof() 指定內存大小；new 則交由 compiler 自己計算
+- 配置成功: malloc 返回 void* 類型，仍需進行強制轉型；new 返回指定類型的指標
+- 配置失敗: malloc 返回 NULL pointer；new 會拋出 bad_alloc Exception
+- new/delete 有 Constructor/Destructor，可以 Overloading，此處不再過多闡釋
 ---
 
 # Inline function
 
+---
+
 # 模板(Template)
+
+---
 
 # File I/O
 
+---
+
 # Exception & RTTI
+
+---
 
 # STL(Standard Template Library)
 #### [C++ STL 成員及用法](https://docs.google.com/spreadsheets/u/0/d/1cmD2xblurWh9j3DD7j_BeHqnXWa1xlovzXzSJg64I4A/pub?output=html)
