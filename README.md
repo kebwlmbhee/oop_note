@@ -7,13 +7,16 @@
 - [物件指標(Object Pointer)](#物件指標object-pointer)
 - [物件變數參考(Object Reference Variable)](#物件變數參考object-reference-variable)
 - [物件指標參考(Object Reference Pointer)](#物件指標參考object-reference-pointer)
-- [Overloading](#overloading)
-- [Overriding](#overriding)
 - [封裝(Encapsulation)](#封裝encapsulation)
+- [Polymorphism--Overloading](#polymorphism----overloading)
 - [繼承(Inheritance)](#繼承inheritance)
 - [建構函式(Constructor)](#建構函式constructor下稱-ctor)
 - [Initialization List](#initialization-list)
-- [多型(Polymorphism)和虛擬(virtual)函式](#多型polymorphism和虛擬virtual函式)
+- [Polymorphism -- Overriding](#polymorphism----overriding)
+  - [Is-a vs. Has-a](#is-a-vs-has-a)
+  - [指派(Assign)](#指派assign)
+  - [虛擬函式(virtual function)](#虛擬函式virtual-function)
+  - [純虛函式(Pure virtual function)](#純虛函式pure-virtual-function)
 - [動態記憶體配置(Dynamic Memory Allocation)](#動態記憶體配置dynamic-memory-allocation)
 - TODO: [Inline function](#inline-function)
 - TODO: [模版(Template)](#模板template) 
@@ -52,7 +55,8 @@
 ### class 和 object 的差別: class 只是方法，object 是照著 class 這個方法所實際生成(實例化)的東西
 ---
 # Friend Class
-#### 前備知識: private, protected, public(參考[封裝(Encapsulation)](#封裝encapsulation))
+#### 前備知識: private, protected, public(參
+[封裝(Encapsulation)](#封裝encapsulation))
 - Friend Class
   - 如果 B_Class 宣告成 A_Class 的 friend class，則 B_Class 可以直接存取 A_Class 的所有成員(private, protected, public)
   
@@ -183,7 +187,7 @@
 > 
 >     ClassName *pointer = function();    // function call
 
-## 物件變數與物件指標的差別即 call by value 和 call by pointer 的差別
+### 物件變數與物件指標的差別即 call by value 和 call by pointer 的差別
 
 ---
 # 物件變數參考(Object Reference Variable)
@@ -212,7 +216,32 @@
 > 
 >     function(objectName)    // function call
 
-# Overloading
+---
+# 封裝(Encapsulation)
+#### 讓特定的物件不能被外界存取，是開發者(developer)用來限制使用者(user)的存取權限的手段。一般來說，只讓使用者接觸到開發者設定的 function interface 以進行調用，而禁止其直接存取變數或 function implementation
+
+e.g.
+
+[Circle.h](Encapsulation/Circle.h)
+
+[Circle.cpp](Encapsulation/Circle.cpp)
+
+
+實現方式: 使用 private, protected, public
+
+- private (default)
+  - 只允許本類別(class)中的其他成員存取
+- protected
+  - 允許本類別(class)的子類別存取。
+- public
+  - 允許所有類別(class)存取
+
+---
+# 多型(Polymorphism)
+#### 多型(Polymorphism): 父類別指標或參考的物件，因指派的物件不同而有不同的實現機制，並以此簡化實現機制的方法，具體實現方法有 Overloading 和 Overriding，以下依序介紹
+
+--- 
+# Polymorphism -- Overloading
 #### 可以簡化函式，允許函式同名但有不同的 function signature
 function signature: 參數順序，數量，型態，不包含 return type & value
 
@@ -231,7 +260,6 @@ function signature: 參數順序，數量，型態，不包含 return type & val
       cout << endl << "sum = " << (a + b);
   }
   
-  // Driver code
   int main()
   {
       add(10, 2);       // 12
@@ -240,7 +268,7 @@ function signature: 參數順序，數量，型態，不包含 return type & val
   }
   ```
 - Constructor Overloading
-  - 參 [建構函式(Constructor)](#建構函式constructor下稱-ctor)的範例
+  - 參[建構函式(Constructor)](#建構函式constructor下稱-ctor)範例
 - Operator Overloading
   ```
   #include<iostream>
@@ -270,73 +298,10 @@ function signature: 參數順序，數量，型態，不包含 return type & val
       c3.print();   // 12 + i9
   }
   ```
----
-# Overriding
-#### 允許子類別對 function 進行個別實作，替換父類別的 function，子類別 override 時，function signature 和回傳型別需與父類別相同
-
-```
-#include<iostream>
-using namespace std;
- 
-class BaseClass
-{
-public:
-    virtual void Display()
-    {
-        cout << "\nThis is Display() method"
-                " of BaseClass";
-    }
-    void Show()
-    {
-        cout << "\nThis is Show() method "
-               "of BaseClass";
-    }
-};
- 
-class DerivedClass : public BaseClass
-{
-public:
-    void Display()
-    {
-        cout << "\nThis is Display() method"
-               " of DerivedClass";
-    }
-};
- 
-// Driver code
-int main()
-{
-    DerivedClass dr;
-    BaseClass &bs = dr;
-    bs.Display();             // This is Display() method of DerivedClass
-    bs.BaseClass::Display();  // This is Show() method of BaseClass
-    bs.Show();                // This is Display() method of BaseClass
-}
-```
-
----
-# 封裝(Encapsulation)
-#### 讓特定的物件不能被外界存取，是開發者(developer)用來限制使用者(user)的存取權限的手段。一般來說，只讓使用者接觸到開發者設定的 function interface 以進行調用，而禁止其直接存取變數或 function implementation
-
-e.g.
-
-[Circle.h](Encapsulation/Circle.h)
-
-[Circle.cpp](Encapsulation/Circle.cpp)
-
-
-實現方式: 使用 private, protected, public
-
-- private (default)
-  - 只允許本類別(class)中的其他成員存取
-- protected
-  - 允許本類別(class)的子類別存取。
-- public
-  - 允許所有類別(class)存取
 
 ---
 # 繼承(Inheritance)
-### 繼承: 建立一個以現有的 class(父類別) 為基礎的新 class(子類別)
+#### 繼承: 建立一個以現有的 class(父類別) 為基礎的新 class(子類別)
 e.g.
 
 [myHeader.h](Inheritance/myHeader.h)
@@ -360,7 +325,6 @@ e.g.
   
 (註: 成員包含變數成員和成員函式)
 
-### 繼承存取限制
 #### 子類別在宣告繼承父類別的時候，可以用存取修飾詞限制父類別的成員在子類別中的新存取層級。
 
 > e.g.
@@ -369,6 +333,8 @@ e.g.
 >>     class Circle : protected Shape{};
 > e.g.
 >>     class Circle : public Shape{};
+
+### 繼承存取限制
 
 - private (上限改為 private)
   - 子類別繼承的所有父類別成員皆為 private
@@ -388,7 +354,7 @@ e.g.
 
 ---
 # 建構函式(Constructor，下稱 ctor)
-### 建構函式: 實現物件初始化，可指定資料成員的初值，讓 user 可以不用進行完整的初值設定，
+#### 建構函式: 實現物件初始化，可指定資料成員的初值，讓 user 可以不用進行完整的初值設定，
 
 e.g.
 
@@ -414,7 +380,7 @@ e.g.
 1. 在 IDE 中可讓 user 由參數名稱中判斷功能
 2. 避免重名時變數的 scope holes
 
-## Initialization List
+# Initialization List
 #### 不會有歧異性
 #### 不能使用 this pointer
 
@@ -424,26 +390,47 @@ e.g.
 >>     Rectangle(int length = 0, int width = 0) : length(length), width(width){}
 
 ---
-# 多型(Polymorphism)和虛擬(virtual)函式
+## Polymorphism -- Overriding
+#### 允許子類別對 function 進行個別實作，替換父類別的 function，子類別 override 時，function signature 和回傳型別需與父類別相同，又稱為 subtyping
 
-### 多型(Polymorphism): 父類別指標或參考的物件，因指派的物件不同而有不同的實現機制，並以此簡化實現機制的方法
+```
+#include<iostream>
+using namespace std;
 
-e.g. 
+class BaseClass
+{
+public:
+    void Display()
+    {
+        cout << "\nThis is Display() method"
+                " of BaseClass";
+    }
+};
 
-[CShape.h](Polymorphism/CShape.h)
+class DerivedClass : public BaseClass
+{
+public:
+    void Display()
+    {
+        cout << "\nThis is Display() method"
+               " of DerivedClass";
+    }
+};
 
-[CShape.cpp](Polymorphism/CShape.cpp)
+int main()
+{
+    DerivedClass dr;
+    BaseClass &bs = dr;
+    bs.Display();               // This is Display() method of BaseClass
+    dr.Display();               // This is Display() method of DerivedClass
+                                // **Problem here: 同一個 dr object 因為使用不同的調用而產生不同的結果
+                                
+    dr.BaseClass::Display();    // This is Display() method of BaseClass
+}
+```
+### 同一個 dr object 因為使用不同的調用而產生不同的結果，顯然這沒有達到 Override 的效果
 
-[CCircle.h](Polymorphism/CCircle.h)
-
-[CCircle.cpp](Polymorphism/CCircle.cpp)
-
-[CRectangle.h](Polymorphism/CRectangle.h)
-
-[CRectangle.cpp](Polymorphism/CRectangle.cpp)
-
-[main.cpp](Polymorphism/main.cpp)
-
+---
 ## Is-a vs. Has-a
 #### _兩者都是用來描述**類別與類別間的關係**_
 
@@ -451,23 +438,24 @@ e.g.
 
 - Is-a(用於繼承): 子類別 is-a 父類別
 
-
-    > e.g. Circle is-a Shape.
+  - A is-a B，代表著 A 其實也是一種 B. 
+    
+    e.g. Circle 也是一種 Shape
     > ```
     > class Shape{ };
     > 
     >class Circle : public Shape{ };
     > ```
-  - A is-a B，代表著 A 其實也是一種 B. e.g. Circle 也是一種 Shape
 
-
-    > e.g. 有父子關係的型別：電子設備 -> 電話 -> 行動電話 -> 智慧型手機。
+    e.g. 有父子關係的型別：電子設備 -> 電話 -> 行動電話 -> 智慧型手機。
     >
     > 物件：你身上的手機。
     >
     > 你身上的手機 is-a 智慧型手機 is-a 行動電話 is-a 電話 is-a 電子設備
     >
-    > 你身上的手機是一個物件，是一個型別為智慧型手機的物件，也是一個型別為行動電話的物件，也是一個型別為電話的物件，也是一個型別為電子設備的物件。
+    > "你身上的手機"是一個物件，也是一個型別"為智慧型手機"的物件，也是一個型別為"行動電話"的物件，也是一個型別為"電話"的物件，也是一個型別為"電子設備"的物件。
+    > 
+    > 你身上的手機可以宣告為"你身上的手機"，也可以宣告為"智慧型手機"，也可以宣告為"行動電話"，也可以宣告為"電話"，也可以宣告為"電子設備"
 
 - Has-a: 手機 has-a 晶片，e.g. Phone has-a Chip.(手機與晶片都是 object)
 
@@ -477,23 +465,43 @@ e.g.
     > class Phone{
     >    Chip chip;
     > };
-## Polymorphism -- Dynamic/Runtime binding
-*指派(Assign): 子類別宣告的物件指派到父類別宣告的物件，反之則不可行。是物件的複製(copy-by-value)，不是多型的應用
-### _**子類別指派到父類別 => 代父出征(O)**_
-### 父類別**不可**指派到子類別 => 替子送死(X, error)
 
-### Dynamic binding 實現依賴於 object 的指標或引用
-1. 指標(Pointer)
-2. 參考(Reference)
-3. 群體(Group)
-4. 參數(Parameter)
+---
+## 指派(Assign)
+#### 子類別宣告的物件指派到父類別宣告的物件，反之則不可行。是物件的複製(copy-by-value)，_**不是多型的應用**_
+
+### 父類別**不可**指派到子類別 => 替子送死(X)
+### _**子類別指派到父類別 => 代父出征(O)**_
+
+  1. 指標(Pointer)
+  2. 參考(Reference)
+  3. 群體(Group)
+  4. 參數(Parameter)
 
 ### 子類別內如果定義與父類別相同的成員函式
 1. 如果子類別沒有指派到父類別，會執行子類別定義的成員函式
-2. 如果子類別指派到父類別(使用 Polymorphism 宣告時)，仍會執行父類別的成員函式(除非使用 virtual keyword 才可以 override)
+2. 如果子類別指派到父類別，仍會執行父類別的成員函式(除非使用 virtual keyword 才可以 override)
 
-## Polymorphism -- Subtyping(virtual)
-#### 父類別與子類別擁有相同的 function signature 及 return type，子類別指派至父類別後，仍能使用子類別實作的 function，體現方式即為繼承後的 Overriding，C++ 使用 virtual 實現
+---
+## 虛擬函式(Virtual Function)
+#### C++ 使用 virtual 實現 Overriding
+
+e.g. 
+
+[CShape.h](Virtual%20Function/CShape.h)
+
+[CShape.cpp](Virtual%20Function/CShape.cpp)
+
+[CCircle.h](Virtual%20Function/CCircle.h)
+
+[CCircle.cpp](Virtual%20Function/CCircle.cpp)
+
+[CRectangle.h](Virtual%20Function/CRectangle.h)
+
+[CRectangle.cpp](Virtual%20Function/CRectangle.cpp)
+
+[main.cpp](Virtual%20Function/main.cpp)
+
 - 父類別
 
   - A. 宣告虛擬函式
@@ -523,6 +531,7 @@ e.g.
     >
     >     void Classname::showInfo(){ // define in .cpp
     >     }
+
   - B. 以指標或參考呼叫虛擬函式
     > 執行子類別 override 的內容，指標使用 (->)，參考使用 (.)
     >
@@ -536,6 +545,44 @@ e.g.
     > csPtr->showInfo();
     > csRef.showInfo();
     > ```
+
+[Polymorphism -- Overriding](#polymorphism----overriding)範例使用了 virtual 後，正常 override Display function
+
+```
+#include<iostream>
+using namespace std;
+
+class BaseClass
+{
+public:
+    virtual void Display()    // add virtual
+    {
+        cout << "\nThis is Display() method"
+                " of BaseClass";
+    }
+};
+
+class DerivedClass : public BaseClass
+{
+public:
+    void Display()
+    {
+        cout << "\nThis is Display() method"
+               " of DerivedClass";
+    }
+};
+
+int main()
+{
+    DerivedClass dr;
+    BaseClass &bs = dr;
+    bs.Display();               // This is Display() method of DerivedClass
+    dr.Display();               // This is Display() method of DerivedClass
+                                // **Problem has been solved
+
+    dr.BaseClass::Display();    // This is Display() method of BaseClass
+}
+```
     
 ## Dynamic Casting
 #### 大原則: 父類別不能指派給子類別(不能替子送死)
@@ -567,6 +614,7 @@ e.g.
   > csRef.showInfo();
   > ```
 
+---
 ## 純虛函式(Pure Virtual Function)
 #### _**類別中若宣告或繼承了一個或多個純虛函式，此類別即為抽象類別(Abstract Class)。**_
 #### _**子類別一定要 override 父類別的純虛函式，否則子類別也會變成 Abstract class。**_
@@ -587,7 +635,7 @@ e.g.
 
 [main.cpp](Pure%20Virtual%20Function/main.cpp)
 
-(註: 僅修改 main.cpp, CShape.h, CShape.cpp，其餘檔案和[多型(Polymorphism)和虛擬(virtual)函式](#多型polymorphism和虛擬virtual函式)的範例相同)
+(註: 僅修改 main.cpp, CShape.h, CShape.cpp，其餘檔案和[虛擬函式(virtual function)](#純虛函式pure-virtual-function)的範例相同)
 
 - A. 宣告純虛擬函式
   > 純虛擬函式只有宣告，沒有定義
