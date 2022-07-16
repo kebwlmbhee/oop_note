@@ -16,6 +16,7 @@
   - [Is-a vs. Has-a](#is-a-vs-has-a)
   - [指派(Assign)](#指派assign)
   - [虛擬函式(virtual function)](#虛擬函式virtual-function)
+  - [Dynamic Casting](#dynamic-casting)
   - [純虛函式(Pure virtual function)](#純虛函式pure-virtual-function)
 - [動態記憶體配置(Dynamic Memory Allocation)](#動態記憶體配置dynamic-memory-allocation)
 - TODO: [Inline function](#inline-function)
