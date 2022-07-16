@@ -8,7 +8,7 @@
 - [物件變數參考(Object Reference Variable)](#物件變數參考object-reference-variable)
 - [物件指標參考(Object Reference Pointer)](#物件指標參考object-reference-pointer)
 - [封裝(Encapsulation)](#封裝encapsulation)
-- [Polymorphism--Overloading](#polymorphism----overloading)
+- [Polymorphism -- Overloading](#polymorphism----overloading)
 - [繼承(Inheritance)](#繼承inheritance)
 - [建構函式(Constructor)](#建構函式constructor下稱-ctor)
 - [Initialization List](#initialization-list)
@@ -390,7 +390,7 @@ e.g.
 >>     Rectangle(int length = 0, int width = 0) : length(length), width(width){}
 
 ---
-## Polymorphism -- Overriding
+# Polymorphism -- Overriding
 #### 允許子類別對 function 進行個別實作，替換父類別的 function，子類別 override 時，function signature 和回傳型別需與父類別相同，又稱為 subtyping
 
 ```
