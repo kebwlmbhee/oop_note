@@ -18,6 +18,7 @@
   - [虛擬函式(virtual function)](#虛擬函式virtual-function)
   - [Dynamic Casting](#dynamic-casting)
   - [純虛函式(Pure virtual function)](#純虛函式pure-virtual-function)
+  - [override & final](#override--final-specifierc11)
 - [動態記憶體配置(Dynamic Memory Allocation)](#動態記憶體配置dynamic-memory-allocation)
 - TODO: [Inline function](#inline-function)
 - TODO: [模版(Template)](#模板template) 
@@ -56,8 +57,7 @@
 ### class 和 object 的差別: class 只是方法，object 是照著 class 這個方法所實際生成(實例化)的東西
 ---
 # Friend Class
-#### 前備知識: private, protected, public(參
-[封裝(Encapsulation)](#封裝encapsulation))
+#### 前備知識: private, protected, public(參[封裝(Encapsulation](#封裝encapsulation))
 - Friend Class
   - 如果 B_Class 宣告成 A_Class 的 friend class，則 B_Class 可以直接存取 A_Class 的所有成員(private, protected, public)
   
@@ -221,11 +221,12 @@
 # 封裝(Encapsulation)
 #### 讓特定的物件不能被外界存取，是開發者(developer)用來限制使用者(user)的存取權限的手段。一般來說，只讓使用者接觸到開發者設定的 function interface 以進行調用，而禁止其直接存取變數或 function implementation
 
-e.g.
+Example:
 
-[Circle.h](Encapsulation/Circle.h)
-
-[Circle.cpp](Encapsulation/Circle.cpp)
+|   Name   |   Link   |
+| -------- | -------- |
+| Circle.h | [Circle.h](Encapsulation/Circle.h) |
+| Circle.cpp | [Circle.cpp](Encapsulation/Circle.cpp) |
 
 
 實現方式: 使用 private, protected, public
@@ -303,11 +304,13 @@ function signature: 參數順序，數量，型態，不包含 return type & val
 ---
 # 繼承(Inheritance)
 #### 繼承: 建立一個以現有的 class(父類別) 為基礎的新 class(子類別)
-e.g.
 
-[myHeader.h](Inheritance/myHeader.h)
+#### Example:
 
-[main.cpp](Inheritance/main.cpp)
+|   Name   |   Link   |
+| -------- | -------- |
+| myHeader.h | [myHeader.h](Inheritance/myHeader.h) |
+| main.cpp | [main.cpp](Inheritance/main.cpp) |
 
 - 子類別/衍生類別(Child class/Derived class): 繼承已有物件
 - 父類別/基礎類別(Parent class/Base class): 被繼承物件
@@ -328,12 +331,10 @@ e.g.
 
 #### 子類別在宣告繼承父類別的時候，可以用存取修飾詞限制父類別的成員在子類別中的新存取層級。
 
-> e.g.
->>     class Circle : private Shape{};
-> e.g.
->>     class Circle : protected Shape{};
-> e.g.
->>     class Circle : public Shape{};
+#### Example:
+>     class Circle : private Shape{};
+>     class CRectangle : protected Shape{};
+>     class CTriangle : public Shape{};
 
 ### 繼承存取限制
 
@@ -357,11 +358,12 @@ e.g.
 # 建構函式(Constructor，下稱 ctor)
 #### 建構函式: 實現物件初始化，可指定資料成員的初值，讓 user 可以不用進行完整的初值設定，
 
-e.g.
+#### Example:
 
-[myHeader2.h](Constructor/myHeader2.h)
-
-[main.cpp](Constructor/main.cpp)
+|   Name   |   Link   |
+| -------- | -------- |
+| myHeader2.h | [myHeader2.h](Constructor/myHeader2.h) |
+| main.cpp | [main.cpp](Constructor/main.cpp) |
 
 與 function 類似，惟以下幾點需要注意
 - ctor 名稱須與 class 名稱相同(case sensitivity)
@@ -385,14 +387,16 @@ e.g.
 #### 不會有歧異性
 #### 不能使用 this pointer
 
-> e.g.
->>     Circle(int r = 0) : radius(r){}
-> e.g
->>     Rectangle(int length = 0, int width = 0) : length(length), width(width){}
+#### Example:
+>     Circle(int r = 0) : radius(r){}
+> 
+>     Rectangle(int length = 0, int width = 0) : length(length), width(width){}
 
 ---
 # Polymorphism -- Overriding
 #### 允許子類別對 function 進行個別實作，替換父類別的 function，子類別 override 時，function signature 和回傳型別需與父類別相同，又稱為 subtyping
+
+Example:
 
 ```
 #include<iostream>
@@ -429,7 +433,7 @@ int main()
     dr.BaseClass::Display();    // This is Display() method of BaseClass
 }
 ```
-### 同一個 dr object 因為使用不同的調用而產生不同的結果，顯然這沒有達到 Override 的效果
+### 上方的程式碼中同一個 dr object 因為使用不同的調用而產生不同的結果，顯然這沒有達到 Override 的效果
 
 ---
 ## Is-a vs. Has-a
@@ -441,14 +445,18 @@ int main()
 
   - A is-a B，代表著 A 其實也是一種 B. 
     
-    e.g. Circle 也是一種 Shape
+    Example: 
+    
+    Circle 也是一種 Shape
     > ```
     > class Shape{ };
     > 
     >class Circle : public Shape{ };
     > ```
 
-    e.g. 有父子關係的型別：電子設備 -> 電話 -> 行動電話 -> 智慧型手機。
+    Example: 
+    
+    有父子關係的型別：電子設備 -> 電話 -> 行動電話 -> 智慧型手機。
     >
     > 物件：你身上的手機。
     >
@@ -458,7 +466,11 @@ int main()
     > 
     > 你身上的手機可以宣告為"你身上的手機"，也可以宣告為"智慧型手機"，也可以宣告為"行動電話"，也可以宣告為"電話"，也可以宣告為"電子設備"
 
-- Has-a: 手機 has-a 晶片，e.g. Phone has-a Chip.(手機與晶片都是 object)
+- Has-a: 手機 has-a 晶片
+  
+  Example:
+  
+  Phone has-a Chip.(手機與晶片都是 object)
 
     > ```
     > class Chip{};
@@ -487,38 +499,37 @@ int main()
 ## 虛擬函式(Virtual Function)
 #### C++ 使用 virtual 實現 Overriding
 
-e.g. 
+#### Example:
 
-[CShape.h](Virtual%20Function/CShape.h)
-
-[CShape.cpp](Virtual%20Function/CShape.cpp)
-
-[CCircle.h](Virtual%20Function/CCircle.h)
-
-[CCircle.cpp](Virtual%20Function/CCircle.cpp)
-
-[CRectangle.h](Virtual%20Function/CRectangle.h)
-
-[CRectangle.cpp](Virtual%20Function/CRectangle.cpp)
-
-[main.cpp](Virtual%20Function/main.cpp)
+|   Name   |   Link   |
+| -------- | -------- |
+| CShape.h | [CShape.h](Virtual%20Function/CShape.h) |
+| CShape.cpp | [CShape.cpp](Virtual%20Function/CShape.cpp) |
+| CCircle.h | [CCircle.h](Virtual%20Function/CCircle.h) |
+| CCircle.cpp | [CCircle.cpp](Virtual%20Function/CCircle.cpp) |
+| CRectangle.h | [CRectangle.h](Virtual%20Function/CRectangle.h) |
+| CRectangle.cpp | [CRectangle.cpp](Virtual%20Function/CRectangle.cpp) |
+| main.cpp | [main.cpp](Virtual%20Function/main.cpp) |
 
 - 父類別
 
   - A. 宣告虛擬函式
   
     > 在函式宣告敘述前加入 keyword virtual.
-    > e.g.
+    >
+    > Example:
     >
     >     virtual void showInfo();    // declare in .h
     >
     >     void Classname::showInfo(){ // define in .cpp
+    >         ...
     >     }
 
   - B. 宣告虛擬解構函式(**一定要宣告**)
   
     > 在 class dtor 前加入 keyword virtual.
-    > e.g.
+    > 
+    > Example:
     >
     >     virtual ~ClassName(){}
 - 子類別
@@ -526,17 +537,18 @@ e.g.
   
     > 再次宣告及定義父類別中的虛擬函式
     >
-    > e.g.
+    > Example:
     >
     >     virtual void showInfo();    // declare in .h
     >
     >     void Classname::showInfo(){ // define in .cpp
+    >         ...
     >     }
 
   - B. 以指標或參考呼叫虛擬函式
     > 執行子類別 override 的內容，指標使用 (->)，參考使用 (.)
     >
-    > e.g.
+    > Example:
     >
     > ```
     > CCircle cc4;
@@ -547,7 +559,7 @@ e.g.
     > csRef.showInfo();
     > ```
 
-[Polymorphism -- Overriding](#polymorphism----overriding)範例使用了 virtual 後，正常 override Display function
+[Polymorphism -- Overriding](#polymorphism----overriding) 的 Example 使用了 virtual 後，正常 override Display function
 
 ```
 #include<iostream>
@@ -594,7 +606,7 @@ int main()
   > 
   > 失敗時返回 NULL pointer
   >
-  > e.g.
+  > Example:
   >
   >     CCircle *ccPtr = dynamic_cast<CCircle *>(csPtr);
 
@@ -604,7 +616,7 @@ int main()
   >
   > dynamic_cast<type&>(reference)
   >
-  > e.g.
+  > Example:
   >
   > ```
   > CCircle cc4;
@@ -620,23 +632,19 @@ int main()
 #### _**類別中若宣告或繼承了一個或多個純虛函式，此類別即為抽象類別(Abstract Class)。**_
 #### _**子類別一定要 override 父類別的純虛函式，否則子類別也會變成 Abstract class。**_
 
-e.g. 
+#### Example:
 
-[CShape.h](Pure%20Virtual%20Function/CShape.h)
+|   Name   |   Link   |
+| -------- | -------- |
+| CShape.h | [CShape.h](Pure%20Virtual%20Function/CShape.h) |
+| CShape.cpp | [CShape.cpp](Pure%20Virtual%20Function/CShape.cpp) |
+| CCircle.h (與 virtual function 範例相同) | [CCircle.h](Pure%20Virtual%20Function/CCircle.h) |
+| CCircle.cpp (與 virtual function 範例相同) | [CCircle.cpp](Pure%20Virtual%20Function/CCircle.cpp) |
+| CRectangle.h (與 virtual function 範例相同) | [CRectangle.h](Pure%20Virtual%20Function/CRectangle.h) |
+| CRectangle.cpp (與 virtual function 範例相同) | [CRectangle.cpp](Pure%20Virtual%20Function/CRectangle.cpp) |
+| main.cpp | [main.cpp](Pure%20Virtual%20Function/main.cpp) |
 
-[CShape.cpp](Pure%20Virtual%20Function/CShape.cpp)
-
-[CCircle.h](Pure%20Virtual%20Function/CCircle.h)
-
-[CCircle.cpp](Pure%20Virtual%20Function/CCircle.cpp)
-
-[CRectangle.h](Pure%20Virtual%20Function/CRectangle.h)
-
-[CRectangle.cpp](Pure%20Virtual%20Function/CRectangle.cpp)
-
-[main.cpp](Pure%20Virtual%20Function/main.cpp)
-
-(註: 僅修改 main.cpp, CShape.h, CShape.cpp，其餘檔案和[虛擬函式(virtual function)](#純虛函式pure-virtual-function)的範例相同)
+(註: 僅修改 main.cpp, CShape.h, CShape.cpp，其餘檔案和[虛擬函式(virtual function)](#虛擬函式virtual-function)的範例相同)
 
 - A. 宣告純虛擬函式
   > 純虛擬函式只有宣告，沒有定義
@@ -654,6 +662,111 @@ e.g.
 ### Summary for virtual function
 - virtual function: 讓子類別決定要不要 override 父類別的 function，不 override 就會使用父類別的 function
 - Pure virtual function: 強迫子類別 override virtual function，否則無法建立 object
+---
+## override & final Specifier(C++11)
+#### override 指示符通常加在子類別 function 後，確認子類別是否會 override 父類別的實作，若否則報 Error
+
+#### Example 1:
+```
+#include <iostream>
+
+using namespace std;
+
+class A
+{
+public:
+    virtual void foo() const{    //因為 A::foo() 多了 const keyword，所以 B::foo() 沒有 override A::foo()
+        cout << "Base Class" << endl;
+    }
+};
+
+class B : public A
+{
+public:
+    void foo() /*override*/{
+        cout << "Derived Class" << endl;
+    }
+};
+
+int main(){
+    A *ptr = new B();
+    ptr->foo();
+    return 0;
+}
+```
+Output: Base Class
+
+if uncomment override specifier, error: 'void B::foo()' marked 'override', but does not override
+
+
+#### Example 2:
+```
+#include <iostream>
+
+using namespace std;
+
+class A
+{
+public:
+     void bar() {    //因為 A::bar() 沒有 virtual keyword，所以 B::bar() 沒有 override A::bar()   
+        cout << "Base Class" << endl;
+    }
+};
+
+class B : public A
+{
+public:
+    void bar() /*override*/{
+        cout << "Derived Class" << endl;
+    }
+};
+
+int main(){
+    A *ptr = new B();
+    ptr->bar();
+    return 0;
+}
+```
+Output: Base Class
+
+if uncomment **override** specifier, error: 'void B::bar()' marked 'override', but does not override
+<br><br/>
+
+#### final 指示符通常加在父類別 function 後，確認是否會有子類別 override 父類別的實作，若是則報 Error
+
+#### Example:
+```
+#include <iostream>
+
+using namespace std;
+
+class A
+{
+public:
+     virtual void bar() final {    //因為 B::bar() override A::bar()
+        cout << "Base Class" << endl;
+    }
+};
+
+class B : public A
+{
+public:
+    void bar() {
+        cout << "Derived Class" << endl;
+    }
+};
+
+int main(){
+    A *ptr = new B();
+    ptr->bar();
+    return 0;
+}
+```
+error: virtual function 'virtual void B::bar()' overriding final function
+
+if comment out **final** specifier, output: Derived Class
+
+
 ---
 # 動態記憶體配置(Dynamic Memory Allocation)
 ####
