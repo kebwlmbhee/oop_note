@@ -47,11 +47,12 @@ void Circle::setRadius(int r){
     if(r > 0){
         radius = r;
         area = radius * radius * 3.14;
-        setArea(radius * radius * 3.14);  // ¦]¬° base class ¬O protected¡A­Y¬° private «h·| error
-        setGirth(radius * 2 * 3.14);  // ¦]¬° base class ¬O protected¡A­Y¬° private «h·| error
+        setArea(radius * radius * 3.14);  // å› ç‚º base class æ˜¯ protectedï¼Œè‹¥ç‚º private å‰‡æœƒ error
+        setGirth(radius * 2 * 3.14);  // å› ç‚º base class æ˜¯ protectedï¼Œè‹¥ç‚º private å‰‡æœƒ error
     }
 }
 
 class Rectangle : public Shape{
 
 };
+

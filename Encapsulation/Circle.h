@@ -26,3 +26,4 @@ void Circle::setHeight(int h){
     if(h > 0)
         height = h;
 }
+

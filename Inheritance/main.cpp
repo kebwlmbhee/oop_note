@@ -7,11 +7,11 @@ using namespace std;
 int main(){
     Circle c1;
     c1.setRadius(10);
-    cout << c1.getArea() << endl;  // ¦]¬°¤wÄ~©Ó Shape ªº private ©M public ¦¨­û
-    cout << c1.getGirth() << endl;  // ¦]¬°¤wÄ~©Ó Shape ªº private ©M public ¦¨­û
+    cout << c1.getArea() << endl;  // å› ç‚ºå·²ç¹¼æ‰¿ Shape çš„ private å’Œ public æˆå“¡
+    cout << c1.getGirth() << endl;  // å› ç‚ºå·²ç¹¼æ‰¿ Shape çš„ private å’Œ public æˆå“¡
 
     Rectangle r1;
-    cout << r1.getArea() << endl;  // ¦]¬°¤wÄ~©Ó Shape ªº private ©M public ¦¨­û
-    cout << r1.getGirth() << endl;  // ¦]¬°¤wÄ~©Ó Shape ªº private ©M public ¦¨­û
+    cout << r1.getArea() << endl;  // å› ç‚ºå·²ç¹¼æ‰¿ Shape çš„ private å’Œ public æˆå“¡
+    cout << r1.getGirth() << endl;  // å› ç‚ºå·²ç¹¼æ‰¿ Shape çš„ private å’Œ public æˆå“¡
     return 0;
 }
