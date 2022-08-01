@@ -57,7 +57,7 @@
 ### class 和 object 的差別: class 只是方法，object 是照著 class 這個方法所實際生成(實例化)的東西
 ---
 # Friend Class
-#### 前備知識: private, protected, public(參[封裝(Encapsulation](#封裝encapsulation))
+#### 前備知識: private, protected, public(參[封裝(Encapsulation)](#封裝encapsulation))
 - Friend Class
   - 如果 B_Class 宣告成 A_Class 的 friend class，則 B_Class 可以直接存取 A_Class 的所有成員(private, protected, public)
   
