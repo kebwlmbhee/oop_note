@@ -425,7 +425,7 @@ copy ctor function prototype: `ClassName (const ClassName &old_obj);`
   
   2. 為什麼 Explicit copy ctor 需要 pass by reference？
   
-      當調用 pass by value 時，像上例所述，pass by value 會調用 copy ctor，在 copy ctor 裡繼續調用 copy ctor，這會陷入 infinite loop
+      當調用 pass by value 時，像上例所述，pass by value 會調用 copy ctor，在 copy ctor 裡繼續調用 copy ctor，這會陷入 infinite recursion
         ```
         void setPoint(Point p1){    // pass ctor by value
             // do something
