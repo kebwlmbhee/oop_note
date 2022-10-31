@@ -284,7 +284,7 @@ Rectangle(int length = 0, int width = 0) : length(length), width(width){}
         char ch='A';
     protected:
         int num = 11;
-
+    public:
         friend void show(ABC &obj);   // X_Function
     };
 
