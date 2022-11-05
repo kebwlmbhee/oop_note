@@ -490,16 +490,23 @@ Example 1:
 ### _**子類別擁有父類別的所有成員，不代表有相應的存取權，子類別不能存取父類別的 private 成員(雖有繼承但不能直接存取)，而僅能存取 protected 和 public 的成員**_
 
 -  private 代表不接受子類別及物件存取
--  protected 代表接受子類別但不接受物件存取(最好用於成員函式而非變數成員，可規避潛在風險，詳見 [protected 的真正用法](https://www.youtube.com/watch?v=qLe0LQ-5Oxc&list=PLnKth7bLoeC4llLBt1p_Sy0BzlMEHqnwZ&index=8))
+-  protected 代表接受子類別但不接受物件存取(最好用於成員函式而非成員變數，可規避潛在風險，詳見 [protected 的真正用法](https://www.youtube.com/watch?v=qLe0LQ-5Oxc&list=PLnKth7bLoeC4llLBt1p_Sy0BzlMEHqnwZ&index=8))
 -  public 代表接受物件存取
 
 子類別可以
 - 新增父類沒有的成員
 - 新增父類已有的成員，會取代父類的成員
   
-(註: 成員包含變數成員和成員函式)
+(註: 成員包含成員變數和成員函式)
 
-#### 子類別在宣告繼承父類別的時候，可以用存取修飾詞限制父類別的成員在子類別中的新存取層級
+#### 子類別在宣告繼承父類別的時候，可以用存取修飾詞(access specifier)限制父類別的成員在子類別中的新存取層級
+
+```
+class  <derived_class_name> : <access-specifier> <base_class_name>
+{
+        //body
+}
+```
 
 Example 1:
 ```
@@ -508,22 +515,22 @@ class CRectangle : protected Shape{};
 class CTriangle : public Shape{};
 ```
 
-#### 繼承存取限制
-
-- private (上限改為 private)
-  - 子類別繼承的所有父類別成員皆為 private
-
-- protected (上限改為 protected，其餘固定)
-  - 在子類別中繼承自父類別的 private 與 protected 的成員不變，public 成員改為 protected
+#### 存取修飾詞(access specifier)
 
 - public (上限為 public，其餘固定)
   - 在子類別中繼承自父類別的所有成員等級均不變
 
-|            | private | protected | public     |
-| ---------- | ------- | --------- | ---------- |
-| private    | private | private   | private    |
-| protected  | private | protected | protected  |
-| public     | private | protected | public     |
+- protected (上限改為 protected，其餘固定)
+  - 在子類別中繼承自父類別的 private 與 protected 的成員不變，public 成員改為 protected
+
+- private (上限改為 private，有繼承到但**無法存取**)
+  - 子類別繼承的所有父類別成員皆**不可存取**
+
+#### 子類別繼承父類別的存取範圍
+
+![Inheritance](Inheritance.png)
+
+特別注意父類別的 private member，子類無論如何繼承都無法存取，因為 protected member 已經扮演相應的角色
 
 ---
 # 多重繼承(Multiple Inheritance)
