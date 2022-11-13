@@ -1955,7 +1955,7 @@ namespace [命名空間名]  //命名省略時，表示匿名的命名空間
 
 What else?
 
-### **永遠不要在你的 header files 中使用 `using namespace ...`**，頭文件會被其它文件 include，這會污染命名空間
+### **永遠不要在你的 header files 中使用 `using ...`**，頭文件會被其它文件 include，這會污染命名空間
 
 關於 using namespace std，也有些人是強烈反對在 .cpp 中使用的，因為你不知道它何時會突然產生錯誤，更多關於此的[討論](https://stackoverflow.com/questions/1452721/why-is-using-namespace-std-considered-bad-practice/1453605#1453605)
 
