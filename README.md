@@ -476,30 +476,30 @@ inline 不一定保證會預先展開，compiler 會拒絕對過於複雜的 fun
 
 ---
 # 繼承(Inheritance)
-#### 繼承: 建立一個以現有的 class(父類別) 為基礎的新 class(子類別)
+#### 繼承: 建立一個以現有的 class(父類) 為基礎的新 class(子類)
 
 Example 1:
 
 [Inheritance](Inheritance)
 
-- 子類別/衍生類別(Child class/Derived class): 繼承已有物件
-- 父類別/基礎類別(Parent class/Base class): 被繼承物件
+- 子類/衍生類別(Child class/Derived class): 繼承已有物件
+- 父類/基礎類別(Parent class/Base class): 被繼承物件
 
-#### 當子繼別繼承父類別時，就擁有父類別的所有成員，可避免 duplication 及降低維護困難度
+#### 當子繼別繼承父類時，就擁有父類的所有成員，可避免 duplication 及降低維護困難度
 
-### _**子類別擁有父類別的所有成員，不代表有相應的存取權，子類別不能存取父類別的 private 成員(雖有繼承但不能直接存取)，而僅能存取 protected 和 public 的成員**_
+### _**子類擁有父類的所有成員，不代表有相應的存取權，子類不能存取父類的 private 成員(雖有繼承但不能直接存取)，而僅能存取 protected 和 public 的成員**_
 
--  private 代表不接受子類別及物件存取
--  protected 代表接受子類別但不接受物件存取(最好用於成員函式而非成員變數，可規避潛在風險，詳見 [protected 的真正用法](https://www.youtube.com/watch?v=qLe0LQ-5Oxc&list=PLnKth7bLoeC4llLBt1p_Sy0BzlMEHqnwZ&index=8))
+-  private 代表不接受子類及物件存取
+-  protected 代表接受子類但不接受物件存取(最好用於成員函式而非成員變數，可規避潛在風險，詳見 [protected 的真正用法](https://www.youtube.com/watch?v=qLe0LQ-5Oxc&list=PLnKth7bLoeC4llLBt1p_Sy0BzlMEHqnwZ&index=8))
 -  public 代表接受物件存取
 
-子類別可以
+子類可以
 - 新增父類沒有的成員
 - 新增父類已有的成員，會取代父類的成員
   
 (註: 成員包含成員變數和成員函式)
 
-#### 子類別在宣告繼承父類別的時候，可以用存取修飾詞(access specifier)限制父類別的成員在子類別中的新存取層級
+#### 子類在宣告繼承父類的時候，可以用存取修飾詞(access specifier)限制父類的成員在子類中的新存取層級
 
 ```
 class  <derived_class_name> : <access-specifier> <base_class_name>
@@ -518,19 +518,19 @@ class CTriangle : public Shape{};
 #### 存取修飾詞(access specifier)
 
 - public (上限為 public，其餘固定)
-  - 在子類別中繼承自父類別的所有成員等級均不變
+  - 在子類中繼承自父類的所有成員等級均不變
 
 - protected (上限改為 protected，其餘固定)
-  - 在子類別中繼承自父類別的 private 與 protected 的成員不變，public 成員改為 protected
+  - 在子類中繼承自父類的 private 與 protected 的成員不變，public 成員改為 protected
 
 - private (上限改為 private，有繼承到但**無法存取**)
-  - 子類別繼承的所有父類別成員皆**不可存取**
+  - 子類繼承的所有父類成員皆**不可存取**
 
-#### 子類別繼承父類別的存取範圍
+#### 子類繼承父類的存取範圍
 
 ![Inheritance](Inheritance.png)
 
-特別注意父類別的 private member，子類無論如何繼承都無法存取，因為 protected member 已經扮演相應的角色
+特別注意父類的 private member，子類無論如何繼承都無法存取，因為 protected member 已經扮演相應的角色
 
 ---
 # 多重繼承(Multiple Inheritance)
@@ -622,7 +622,7 @@ function signature: 參數順序，數量，型態，不包含 return type & val
 
 ---
 # Polymorphism -- Overriding
-#### 允許子類別對 function 進行個別實作，替換父類別的 function，子類別 override 時，function signature 和回傳型別需與父類別相同，又稱為 subtyping (正確的 subtyping 要在父類加上 virtual)
+#### 允許子類對 function 進行個別實作，替換父類的 function，子類 override 時，function signature 和回傳型別需與父類相同，又稱為 subtyping (正確的 subtyping 要在父類加上 virtual)
 
 Example 1:
 ```
@@ -668,7 +668,7 @@ int main()
 
 ### Note: is-a代表類別之間階層的父子關係。has-a代表類別之間的whole/part關係
 
-- Is-a(用於繼承): 子類別 is-a 父類別
+- Is-a(用於繼承): 子類 is-a 父類
 
   - A is-a B，代表著 A 其實也是一種 B. 
     
@@ -708,19 +708,19 @@ int main()
 
 ---
 ## 指派(Assign)
-#### 子類別宣告的物件指派到父類別宣告的物件，反之則不可行。是物件的複製(copy-by-value)，_**不是多型的應用**_
+#### 子類宣告的物件指派到父類宣告的物件，反之則不可行。是物件的複製(copy-by-value)，_**不是多型的應用**_
 
-### 父類別**不可**指派到子類別 => 替子送死(X)
-### _**子類別指派到父類別 => 代父出征(O)**_
+### 父類**不可**指派到子類 => 替子送死(X)
+### _**子類指派到父類 => 代父出征(O)**_
 
   1. 指標(Pointer)
   2. 參考(Reference)
   3. 群體(Group)
   4. 參數(Parameter)
 
-#### 子類別內如果定義與父類別相同的成員函式
-1. 如果子類別指派到父類別，會執行父類別定義的成員函式
-2. 如果子類別沒有指派到父類別，仍會執行父類別的成員函式(除非使用 virtual keyword 才可以 override，執行子類別函式)
+#### 子類內如果定義與父類相同的成員函式
+1. 如果子類指派到父類，會執行父類定義的成員函式
+2. 如果子類沒有指派到父類，仍會執行父類的成員函式(除非使用 virtual keyword 才可以 override，執行子類成員函式)
 
 ---
 ## 虛擬函式(Virtual Function)
@@ -730,7 +730,7 @@ Example 5:
 
 [Virtual Function](Virtual%20Function)
 
-- 父類別
+- 父類
 
   - A. 宣告虛擬函式
   
@@ -753,10 +753,10 @@ Example 5:
          
         virtual ~ClassName(){}
 
-- 子類別
-  - A. Override 父類別宣告的虛擬函式
+- 子類
+  - A. Override 父類宣告的虛擬函式
   
-    再次宣告及定義父類別中的虛擬函式
+    再次宣告及定義父類中的虛擬函式
 
     Example 8:
     ```
@@ -768,17 +768,19 @@ Example 5:
     ```
 
   - B. 以指標或參考呼叫虛擬函式
-    執行子類別 override 的內容，指標使用 (->)，參考使用 (.)
+    執行子類 override 的內容，指標使用 (->)，參考使用 (.)
 
     Example 9:
         
     ```
+    // in Example 5 Virtual Function
+    CShape *csPtr;
     CCircle cc4;
     cc4.setRadius(100);
     csPtr = &cc4;
-    csRef = cc4;
+    CShape &csRef2 = cc4;
     csPtr->showInfo();
-    csRef.showInfo();
+    csRef2.showInfo();
     ```
 
 [Polymorphism -- Overriding](#polymorphism----overriding) 的 Example 使用了 virtual 後，正常 override Display function
@@ -820,8 +822,8 @@ int main()
 ```
     
 ## Dynamic Casting
-#### 大原則: 父類別不能指派給子類別(不能替子送死)
-#### 當定義時為子類別，傳遞 Parameter 是父類別時，可以透過 Dynamic Casting 轉為原先定義時的子類別
+#### 大原則: 父類不能指派給子類(不能替子送死)
+#### 當定義時為子類，傳遞 Parameter 是父類時，可以透過 Dynamic Casting 轉為原先定義時的子類
 
 - A. 指標
 
@@ -842,18 +844,13 @@ int main()
   
     Example 11:
     ```
-    CCircle cc4;
-    cc4.setRadius(100);
-    csPtr = &cc4;
-    csRef = cc4;
-    csPtr->showInfo();
-    csRef.showInfo();
+    CRectangle &crRef = dynamic_cast<CRectangle &>(csRef);
     ```
 
 ---
 ## 純虛函式(Pure Virtual Function)
 #### _**類別中若宣告或繼承了一個或多個純虛函式，此類別即為抽象類別(Abstract Class)**_
-#### _**子類別一定要 override 父類別的純虛函式，否則子類別也會變成 Abstract class**_
+#### _**子類一定要 override 父類的純虛函式，否則子類也會變成 Abstract class**_
 
 Example 12:
 
@@ -869,16 +866,16 @@ Example 12:
 
 - B. Abstract class
   1. 不可建立 object，但可建立及使用 object pointer or object reference
-  2. 可以做為實作多型的差別，單純做父類別讓子類別繼承
+  2. 單純讓子類繼承而非建構物件
   
-#### Pure virtual function 是為了強迫子類別進行 override
+#### Pure virtual function 是為了強迫子類進行 override
 
 ### Summary for virtual function
-- virtual function: 讓子類別決定要不要 override 父類別的 function，不 override 就會使用父類別的 function
-- Pure virtual function: 強迫子類別 override virtual function，否則無法建立 object
+- virtual function: 讓子類決定要不要 override 父類的 function，不 override 就會使用父類的 function
+- Pure virtual function: 強迫子類 override virtual function，否則無法建立 object (因為子類也會因為有父類的 Pure virtual function 而變成 abstract class)
 ---
 ## override & final Specifier(C++11)
-#### override 指示符通常加在子類別 function 後，確認子類別是否會 override 父類別的實作，若否則報 Error
+#### override 指示符通常加在子類 function 後，確認子類是否會 override 父類的實作，若否則報 Error
 
 Example 13:
 ```
@@ -950,7 +947,7 @@ if uncomment `override` specifier:
 error: `'void B::bar()' marked 'override', but does not override`
 <br><br/>
 
-#### final 指示符通常加在父類別 function 後，確認是否會有子類別 override 父類別的實作，若是則報 Error
+#### final 指示符通常加在父類 function 後，確認是否會有子類 override 父類的實作，若是則報 Error
 
 Example 15:
 ```
