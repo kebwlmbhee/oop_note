@@ -910,7 +910,7 @@ int main(){
 ```
 Output: Base Class
 
-if uncomment override specifier:
+if uncomment `override` specifier:
 
 error: `'void B::foo()' marked 'override', but does not override`
 
@@ -945,7 +945,7 @@ int main(){
 ```
 Output: Base Class
 
-if uncomment **override** specifier:
+if uncomment `override` specifier:
 
 error: `'void B::bar()' marked 'override', but does not override`
 <br><br/>
@@ -982,7 +982,7 @@ int main(){
 ```
 error: `virtual function 'virtual void B::bar()' overriding final function`
 
-if comment out **final** specifier:
+if comment out `final` specifier:
 
 Output: Derived Class
 
