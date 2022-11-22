@@ -833,7 +833,12 @@ int main()
   
     Example 10:
     ```
-    CCircle *ccPtr = dynamic_cast<CCircle *>(csPtr);
+    void doubleShape(CShape *csPtr){
+        CCircle *ccPtr = dynamic_cast<CCircle *>(csPtr);
+    }
+
+    CCircle cc5;
+    doubleShape(&cc5);
     ```
 
 - B. 參考
@@ -844,7 +849,12 @@ int main()
   
     Example 11:
     ```
-    CRectangle &crRef = dynamic_cast<CRectangle &>(csRef);
+    void doubleShape(CShape &csRef){
+        CCircle &ccRef = dynamic_cast<CCircle &>(csRef);
+    }
+
+    CCircle cc5;
+    doubleShape(cc5);
     ```
 
 ---
