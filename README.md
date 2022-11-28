@@ -1227,7 +1227,7 @@ template 也可以設置默認值，在設置默認值時需注意以下幾點:
 
 What else?
 
-C++ 之所以推出 template 是為了[封裝](#封裝encapsulation)資料結構，資料結構重視資料的存儲和 CRUD(Create, Read, Update, Delete)，開發者想封裝這些資料結構，但 data type 無法提前預測，於是 template 橫空出世，而 [STL](#stlstandard-template-library) 就是 C++ 對資料結構後封裝後所形成的標準庫
+C++ 之所以推出 template 是為了[封裝](#封裝encapsulation)資料結構，資料結構重視資料的存儲和 CRUD(Create, Read, Update, Delete)，開發者想封裝這些資料結構，但 data type 無法提前預測，於是 template 橫空出世，而 [STL](#stlstandard-template-library) 就是 C++ 對資料結構封裝後所形成的標準庫
 
 ---
 # 動態記憶體配置(Dynamic Memory Allocation)
