@@ -52,12 +52,12 @@
 - 宣告
 
     變數宣告時，環境會依照類別中的宣告來建立物件，並將物件的記憶體位址指派給變數
-    ```
+    ```C++
     ClassName objectName;
     ```
 
 - 成員存取
-    ```
+    ```C++
     objectName.dataMember    // 資料成員
 
     objectName.memberFunction()    // 成員函式
@@ -66,7 +66,7 @@
 - 指派
     變數和物件是綁定的，即此變數不能再被指派另一個物件的**記憶體位址** ，指派時是將 "=" 右邊的物件的資料成員的**值**，複製給 "=" 左邊的物件的資料成員
 
-    ```
+    ```C++
     Circle c1, c2
     
     c1 = c2    // 此處僅將 c2 裡的值(value)複製給 c1. 兩變數的位址(address)並不會改變
@@ -76,14 +76,14 @@
 
     物件變數當參數傳遞時，會先複製出一個新物件(objectName_new)，此新物件與原物件(objectName_origin)僅有值相同，而地址並不相同；新物件的改動不影響原物件，即 implementation 內若 function 更動 objectName_new 的值時不會影響到 objectName_origin 的值
 
-    ```
+    ```C++
     void function(ClassName objectName_new){}    // interface:
 
     function(objectName_origin);    // function call
     ```
 - 物件變數返回值(返回物件 ClassName)
 
-    ```
+    ```C++
     ClassName function(){}      // interface:
 
     ClassName objectName = function();    // function call
@@ -94,30 +94,30 @@
 - 宣告
 
     不直接指派
-    ```
+    ```C++
     ClassName *pointerName;
     pointerName = new ClassName;
     ```
     直接指派(新增物件，使指標指向該物件)
-    ```
+    ```C++
     ClassName *pointerName = new ClassName;
     ```
 
 - 建立物件
 
     普通形式: 
-    ```
+    ```C++
     new ClassName
     ```
     ctor(constructor)
-    ```
-    new ClassName()`
+    ```C++
+    new ClassName()
     ```
 
 - 指派
 
     與值會被綁定在物件身上不同，指標可以隨意指派至任意相同型別的物件位址
-    ```
+    ```C++
     pointerName = memoryAddress;
 
     pointerName = new ClassName;
@@ -130,20 +130,20 @@
 #### 物件指標需避免 memory leak，要先進行釋放
 
 - 成員存取(用**指標->成員**的方式，存取物件成員)
-    ```
+    ```C++
     pointerName->dataMeber    // 資料成員
 
     pointerName->memberFunction()    // 成員函式
     ```
 
 - 物件指標參數
-    ```
+    ```C++
     void function(ClassName *pointer){}    // interface
 
     function(memoryAddress)    // function call
     ```
 - 物件指標返回值(返回物件指標 ClassName* )
-    ```
+    ```C++
     ClassName *function(){}    // interface
 
     ClassName *pointer = function();    // function call
@@ -155,17 +155,17 @@
 # 物件變數參考(Object Reference Variable)
 - 宣告
 
-    ```
+    ```C++
     ClassName &referenceName = objectName;
     ```
 - 物件變數參考參數
-    ```
+    ```C++
     void function(ClassName &referenceName){}    // interface:
 
     function(objectName);    // function call
     ```
 - 物件變數參考返回值
-    ```
+    ```C++
     ClassName &function(ClassName &referenctName)    // interface
 
     function(objectName)    // function call
@@ -232,7 +232,7 @@ Example 1:
 #### 不能使用 this pointer
 
 Example 1:
-```
+```C++
 Circle(int r = 0) : radius(r){}
 
 Rectangle(int length = 0, int width = 0) : length(length), width(width){}
@@ -244,7 +244,7 @@ Rectangle(int length = 0, int width = 0) : length(length), width(width){}
 - Friend Class
   - 如果 B_Class 宣告成 A_Class 的 friend class，則 B_Class 可以直接存取 A_Class 的所有成員(private, protected, public)
   
-    ```
+    ```C++
     #include <iostream>
     using namespace std;
 
@@ -275,7 +275,7 @@ Rectangle(int length = 0, int width = 0) : length(length), width(width){}
 - Friend Function
   - 如果 X_Function 宣告成 A_Class 的 friend function，則可以透過 X_Function 直接存取 A_Class 的所有成員(private, protected, public)
   
-    ```
+    ```C++
     #include <iostream>
     using namespace std;
 
@@ -312,7 +312,7 @@ copy ctor function prototype: `ClassName (const ClassName &old_obj);`
 - copy ctor 可以由 programmer 定義或是交由 compiler 自動創建默認的
 
     Example 1:
-    ```
+    ```C++
     // Explicit copy ctor
     #include <iostream>
 
@@ -347,7 +347,7 @@ copy ctor function prototype: `ClassName (const ClassName &old_obj);`
     ```
 
     Example 2:
-    ```
+    ```C++
     // Implicit copy ctor
     #include<iostream>
 
@@ -378,7 +378,7 @@ copy ctor function prototype: `ClassName (const ClassName &old_obj);`
     ```
 
     還有以下情況也會調用 copy ctor
-    ```
+    ```C++
     Point getPoint(){        // return ctor from function
         Point p1(10, 15);
         return p1;
@@ -394,7 +394,7 @@ copy ctor function prototype: `ClassName (const ClassName &old_obj);`
 
     像上面 Example 所提到的例子都是 copy ctor
 
-    ```
+    ```C++
     Point p2 = p1    // copy ctor from Example 1
 
     Sample obj2 = obj1    // copy ctor from Example2
@@ -426,7 +426,7 @@ copy ctor function prototype: `ClassName (const ClassName &old_obj);`
   2. 為什麼 Explicit copy ctor 需要 pass by reference？
   
       當調用 pass by value 時，像上例所述，pass by value 會調用 copy ctor，在 copy ctor 裡繼續調用 copy ctor，這會陷入 infinite recursion
-        ```
+        ```C++
         void setPoint(Point p1){    // pass ctor by value
             // do something
         }
@@ -446,7 +446,7 @@ copy ctor function prototype: `ClassName (const ClassName &old_obj);`
 ---
 # Inline Function
 #### 實現方式: 在定義函式的前方加入 inline keyword
-```
+```C++
 #include<stdio.h>
 #include<iostream>
 using namespace std;
@@ -501,7 +501,7 @@ Example 1:
 
 #### 子類在宣告繼承父類的時候，可以用存取修飾詞(access specifier)限制父類的成員在子類中的新存取層級
 
-```
+```C++
 class  <derived_class_name> : <access-specifier> <base_class_name>
 {
         //body
@@ -509,7 +509,7 @@ class  <derived_class_name> : <access-specifier> <base_class_name>
 ```
 
 Example 1:
-```
+```C++
 class Circle : private Shape{};
 class CRectangle : protected Shape{};
 class CTriangle : public Shape{};
@@ -567,7 +567,7 @@ Example 2:
 function signature: 參數順序，數量，型態，不包含 return type & value
 
 - Function Overloading
-  ```
+  ```C++
   #include <iostream>
   using namespace std;
   
@@ -591,7 +591,7 @@ function signature: 參數順序，數量，型態，不包含 return type & val
 - Constructor Overloading
   - 參[建構函式(Constructor)](#建構函式constructor下稱-ctor)範例
 - Operator Overloading
-  ```
+  ```C++
   #include<iostream>
   using namespace std;
   
@@ -625,7 +625,7 @@ function signature: 參數順序，數量，型態，不包含 return type & val
 #### 允許子類對 function 進行個別實作，替換父類的 function，子類 override 時，function signature 和回傳型別需與父類相同，又稱為 subtyping (正確的 subtyping 要在父類加上 virtual)
 
 Example 1:
-```
+```C++
 #include<iostream>
 using namespace std;
 
@@ -673,7 +673,7 @@ int main()
   - A is-a B，代表著 A 其實也是一種 B. 
     
     Example 2: 
-    ```
+    ```C++
     // Circle 也是一種 Shape
 
     class Shape{ };
@@ -696,7 +696,7 @@ int main()
 - Has-a: 手機 has-a 晶片
 
     Example 4:
-    ```
+    ```C++
     // Phone has-a Chip.(手機與晶片都是 object)
 
     class Chip{};
@@ -737,7 +737,7 @@ Example 5:
     在函式宣告敘述前加入 keyword virtual.
 
     Example 6:
-    ```
+    ```C++
     virtual void showInfo();    // declare in .h
     
     void Classname::showInfo(){ // define in .cpp
@@ -750,8 +750,9 @@ Example 5:
     在 class dtor 前加入 keyword virtual.
     
     Example 7:
-         
-        virtual ~ClassName(){}
+    ```C++
+    virtual ~ClassName(){}
+    ```
 
 - 子類
   - A. Override 父類宣告的虛擬函式
@@ -759,7 +760,7 @@ Example 5:
     再次宣告及定義父類中的虛擬函式
 
     Example 8:
-    ```
+    ```C++
     virtual void showInfo();    // declare in .h
     
     void Classname::showInfo(){ // define in .cpp
@@ -772,7 +773,7 @@ Example 5:
 
     Example 9:
         
-    ```
+    ```C++
     // in Example 5 Virtual Function
     CShape *csPtr;
     CCircle cc4;
@@ -785,7 +786,7 @@ Example 5:
 
 [Polymorphism -- Overriding](#polymorphism----overriding) 的 Example 使用了 virtual 後，正常 override Display function
 
-```
+```C++
 #include<iostream>
 using namespace std;
 
@@ -832,7 +833,7 @@ int main()
     失敗時返回 NULL pointer
   
     Example 10:
-    ```
+    ```C++
     void doubleShape(CShape *csPtr){
         CCircle *ccPtr = dynamic_cast<CCircle *>(csPtr);
     }
@@ -848,7 +849,7 @@ int main()
     失敗時拋出 bad_cast Exception
   
     Example 11:
-    ```
+    ```C++
     void doubleShape(CShape &csRef){
         CCircle &ccRef = dynamic_cast<CCircle &>(csRef);
     }
@@ -888,7 +889,7 @@ Example 12:
 #### override 指示符通常加在子類 function 後，確認子類是否會 override 父類的實作，若否則報 Error
 
 Example 13:
-```
+```C++
 #include <iostream>
 
 using namespace std;
@@ -923,7 +924,7 @@ error: `'void B::foo()' marked 'override', but does not override`
 
 
 Example 14:
-```
+```C++
 #include <iostream>
 
 using namespace std;
@@ -960,7 +961,7 @@ error: `'void B::bar()' marked 'override', but does not override`
 #### final 指示符通常加在父類 function 後，確認是否會有子類 override 父類的實作，若是則報 Error
 
 Example 15:
-```
+```C++
 #include <iostream>
 
 using namespace std;
@@ -1005,13 +1006,13 @@ template 能接受任意類型的參數，並生成相對應的函數，這些�
 在 template 引入 C++ 後，為了避免 template 的 class keyword 和原先的 class 的使用可能令人混淆，所以引入了 typename keyword，但兩個 keyword 在 template 的作用基乎一樣
 
 具體實現:
-```
+```C++
 template <class identifier> function_declaration;
 template <typename identifier> function_declaration;
 ```
 
 Example 1:
-```
+```C++
 #include <iostream>
 
 using namespace std;
@@ -1033,7 +1034,7 @@ int main () {
 template 接受多個不同類型的 type
 
 Example 2:
-```
+```C++
 #include <iostream>
 
 using namespace std;
@@ -1055,7 +1056,7 @@ int main () {
 template 可以定義在 class 內，使得該 class 能有通用型的成員
 
 Example 3:
-```
+```C++
 #include <iostream>
 
 using namespace std;
@@ -1089,7 +1090,7 @@ int main()
 以上介紹的兩種 template 類型，不管什麼類型，template 都是使用相同的方法操作並回傳，而 template specialization 是針對不同類型的傳入，能使用不同的方法操作並回應
 
 Example 4:
-```
+```C++
 #include <iostream>
 
 using namespace std;
@@ -1127,7 +1128,7 @@ int main () {
 function template 和 class template 除了使用 class 和 typename 定義新的 type 外，也可以包含基本的 data type 當作正常 function 傳參使用，下例定義一個用來儲存 array 的 class template
 
 Example 5:
-```
+```C++
 #include <iostream>
 
 using namespace std;
@@ -1167,7 +1168,7 @@ template 也可以設置默認值，在設置默認值時需注意以下幾點:
 2. 設了默認值，還是需要 `<>`，像是 `array myints;` 會報錯
 3. 設了默認值，常數值需對應傳參位置
    
-    ```
+    ```C++
     template <class T = int, class U, int N = 5>
 
     array test0                  // error
@@ -1191,7 +1192,7 @@ template 也可以設置默認值，在設置默認值時需注意以下幾點:
   1. 使用 .tpp 檔儲存你的 template implementation
    
       Foo.h
-      ```
+      ```C++
       template <typename T>
       struct Foo
       {
@@ -1201,7 +1202,7 @@ template 也可以設置默認值，在設置默認值時需注意以下幾點:
       #include "Foo.tpp"
       ```
       Foo.tpp
-      ```
+      ```C++
       template <typename T>
       void Foo<T>::doSomething(T param)
       {
@@ -1211,12 +1212,12 @@ template 也可以設置默認值，在設置默認值時需注意以下幾點:
   2. explicit instantiation 規範特定類型可用
 
       Foo.h
-      ```
+      ```C++
       // no implementation
       template <typename T> struct Foo { ... };
       ```
       Foo.cpp
-      ```
+      ```C++
       // implementation of Foo's methods
 
       // explicit instantiations
@@ -1328,7 +1329,7 @@ C++ I/O class hierarchy
 
 
 Example 1:
-```
+```C++
 // read and write file by using ifstream & ofstream classes
 
 #include <iostream>
@@ -1390,7 +1391,7 @@ int main()
 }
 ```
 Example 2:
-```
+```C++
 // read and write file by using fstream
 
 #include <iostream>
@@ -1464,7 +1465,7 @@ What else?
 #### Exception 是當 program 在執行時，如果遇到它無法解決的錯誤，可以依據提前寫在 exception 的內容，讓 user 知道發生了什麼事，而不是無預警的 program 中斷然後噴 Error
 
 if-else statement 可以做簡單的 exception handling
-```
+```C++
 If(b != 0){
 cout<< “a / b=” << double(a / b)<<endl;
 }
@@ -1475,7 +1476,7 @@ cout << "Cannot divide by zero" << endl;
 ```
 如果所有的例外都能事先知道，可以用 if-else，但用起來會很繁瑣。大部分情況都是無法預先判斷的，這時候 try-catch 就很有用
 
-```
+```C++
 try{
 程式（可能造成例外的敘述）
     throw exception;
@@ -1488,7 +1489,7 @@ catch（…）{/*處理所有的例外 */}
 ```
 
 Example 1:
-```
+```C++
 #include <iostream>
 
 using namespace std;
@@ -1536,7 +1537,6 @@ Output:
 1.66667
 x = 5
 y = 3
-
 ```
 - try 後方應緊鄰 catch，否則會報錯`error: expected 'catch' before 'xxx'`
 - 當 try 區塊發生例外時，會找到符合 catch 的 parameter type，執行該 catch 區塊的內容
@@ -1563,7 +1563,7 @@ std::range_error | 嘗試存儲超出範圍的值時，會拋出該例外 |
 std::underflow_error | 當發生數學下溢時，會拋出該例外 |
 
 Example 2:
-```
+```C++
 #include <iostream>
 #include <exception>
 
@@ -1590,12 +1590,11 @@ Allocate 10000000 doubles in ptr[1]
 Allocate 10000000 doubles in ptr[2]
 Allocate 10000000 doubles in ptr[3]
 Exception occurred: std::bad_alloc
-
 ```
 
 #### 也可以自定義 exception，繼承自 exception class
 Example 3:
-```
+```C++
 // User-defined exceptions
 #include <iostream>
 #include <exception>
@@ -1635,7 +1634,7 @@ Output: Divide By Zero Exception
 巢狀 try-catch
 
 Example 4:
-```
+```C++
 // Nested try-catch blocks
 #include <iostream>
 
@@ -1670,11 +1669,10 @@ throw a int error
 Inside error: 1
 throw a double error
 Outside error: 1.5
-
 ```
 
 Exception 也可以被重覆丟出(Rethrow)
-```
+```C++
 // Rethrow exception
 #include <iostream>
 #include <exception>
@@ -1710,7 +1708,6 @@ Function throwException throws an exception
 Exception handled in function throwException
 Function throwException rethrows exception
 Exception handled in main
-
 ```
 
 
@@ -1735,7 +1732,7 @@ C++ 是一門靜態語言，這意謂著它僅在 compile-time 檢查變數的 d
   - 對於 C++ 的 built-in type 的 typeid
 
     Example 5:
-    ```
+    ```C++
     #include <iostream>
     #include <typeinfo>
     #include <cxxabi.h>
@@ -1770,7 +1767,7 @@ C++ 是一門靜態語言，這意謂著它僅在 compile-time 檢查變數的 d
   - 對於自己定義的 class (RTTI 核心)
 
     Example 6:
-    ```
+    ```C++
     #include <iostream>
     #include <typeinfo>
     #include <cxxabi.h>
@@ -1810,7 +1807,7 @@ C++ 是一門靜態語言，這意謂著它僅在 compile-time 檢查變數的 d
     2. 剛剛不是說 RTTI 能顯示實際指向的 type 嗎？**為什麼 pA 指向 B，但輸出的是 A？**
 
     修改 class A 如下，其它不變
-    ```
+    ```C++
     class A{
         public:
             virtual ~A(){}
@@ -1829,7 +1826,7 @@ C++ 是一門靜態語言，這意謂著它僅在 compile-time 檢查變數的 d
 - dynamic_cast: 將父類的指標/引用安全的轉換為子類的指標/引用 (dynamic_cast 很常使用)
     
     Example 7:
-    ```
+    ```C++
     #include <iostream>
     #include <typeinfo>
 
@@ -1870,7 +1867,7 @@ C++ 是一門靜態語言，這意謂著它僅在 compile-time 檢查變數的 d
     使用 type_info overloading == 和 != 比較兩個 object 的 class(通常用於比較帶有 virtual function 的 class)是否相同
 
     Example 8:
-    ```
+    ```C++
     #include <iostream>
     #include <typeinfo>
     using namespace std;
@@ -1927,7 +1924,7 @@ C++ 是一門靜態語言，這意謂著它僅在 compile-time 檢查變數的 d
     I am a C truly.
     ```
     但 dynamic_cast 的版本會更常見一點
-    ```
+    ```C++
     void Handle(A *a){
         if (dynamic_cast<B*>(a)){
             cout << "I am a B truly." << endl;
@@ -1945,7 +1942,7 @@ C++ 是一門靜態語言，這意謂著它僅在 compile-time 檢查變數的 d
 # 命名空間(namespace)
 #### 可以自己命名的一塊內存區域，開發者可以根據需要指定一個有名字的空間，每個空間都有一個作用域(scope)，將一些全局變數放在空間中，就能和其它地區做出切割，避免 redefinition
 
-```
+```C++
 namespace [命名空間名]  //命名省略時，表示匿名的命名空間
 {
 	命名空間成員;
@@ -1985,12 +1982,12 @@ What else?
   - function
     - 所有容器具有的 function
 
-        ```
+        ```C++
         int size();
         bool empty();
         ```
     - Sequence Containers & Associative Containers
-        ```
+        ```C++
         begin()     // 返回容器第一個元素
         end()       // 返回容器最後一個元素
         rbegin()    // 反向迭代器，指向最後一個元素，以相反順序迭代
@@ -1998,7 +1995,7 @@ What else?
         clear()     // 清空容器
         ```
     - Sequence Containers
-        ```
+        ```C++
         front()         // 獲得第一個元素的值
         back()          // 獲得最後一個元素的值
         push_back();    // 插入值在末尾
@@ -2009,7 +2006,7 @@ What else?
   - 印出陣列有兩種方法
 
     Example 1:
-    ```
+    ```C++
     #include <iostream>
 
     using namespace std;
@@ -2041,7 +2038,7 @@ What else?
     印出 vector 也有兩種方法
 
     Example 2:
-    ```
+    ```C++
     #include <iostream>
     #include <vector>
 
