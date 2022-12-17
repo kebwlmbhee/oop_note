@@ -47,8 +47,8 @@ void Circle::setRadius(int r){
     if(r > 0){
         radius = r;
         area = radius * radius * 3.14;
-        setArea(radius * radius * 3.14);  // 因為 base class 是 protected，若為 private 則會 error
-        setGirth(radius * 2 * 3.14);  // 因為 base class 是 protected，若為 private 則會 error
+        setArea(radius * radius * 3.14);  // 因為繼承後該 func 為 protected，所以子類可使用，若為 private 則會 error
+        setGirth(radius * 2 * 3.14);  // 因為繼承後該 func 為 protected，所以子類可使用，若為 private 則會 error
     }
 }
 
