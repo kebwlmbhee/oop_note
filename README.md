@@ -814,11 +814,11 @@ int main()
 {
     DerivedClass dr;
     BaseClass &bs = dr;
-    bs.Display();               // This is Display() method of DerivedClass
-    dr.Display();               // This is Display() method of DerivedClass
+    bs.Display();               // Output: This is Display() method of DerivedClass
+    dr.Display();               // Output: This is Display() method of DerivedClass
                                 // **Problem has been solved
 
-    dr.BaseClass::Display();    // This is Display() method of BaseClass
+    dr.BaseClass::Display();    // Output: This is Display() method of BaseClass
 }
 ```
     
