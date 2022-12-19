@@ -881,7 +881,7 @@ Example 12:
   
 #### Pure virtual function 是為了強迫子類進行 override
 
-### Summary for virtual function
+### Summary of virtual function
 - virtual function: 讓子類決定要不要 override 父類的 function，不 override 就會使用父類的 function
 - Pure virtual function: 強迫子類 override virtual function，否則無法建立 object (因為子類也會因為有父類的 Pure virtual function 而變成 abstract class)
 ---
@@ -1181,15 +1181,15 @@ template 也可以設置默認值，在設置默認值時需注意以下幾點:
     ```
 
 
-### Summary for template
+### Summary of template
 
 - template 在 compile-time 時能依據傳遞的參數自行擴展、實例化(instantiate)一個相對應的 function
 
-- 在 multiple-file project 時，interface 和 implementation 是分開的，通常一個在 .h file，另一個在 .cpp file，但如果將 template 像一般函數一樣僅將 declare 單獨存放在 interface，就會出現問題。原因是當讀到 .cpp 中的 template instantiation 時，compiler 需要訪問 function implementation，如果 implementation 沒出現在頭文件中，就會無法訪問，導致無法 instantiate
+- 在 multiple-file project 時，interface 和 implementation 是分開的，通常一個在 .h file，另一個在 .cpp file，但如果將 template 像一般函數一樣僅將 declare 單獨存放在 interface，就會出現問題。原因是當讀到 .cpp 中的 template instantiation 時，compiler 將會自行擴展程式碼，生成一個對應類型的 class，如果此時這些 implementation 沒有出現在頭文件中，就會無法訪問，導致無法 instantiate
 
 - 但我還是需要 template interface 和 template implementation 分離? [Ref Link](https://stackoverflow.com/questions/495021/why-can-templates-only-be-implemented-in-the-header-file)
 
-  1. 使用 .tpp 檔儲存你的 template implementation
+  1. 使用 .tpp 檔儲存你的 template implementation，並引入該文件於頭文件的結尾處
    
       Foo.h
       ```C++
@@ -1711,7 +1711,7 @@ Exception handled in main
 ```
 
 
-### Summary for Exceptions
+### Summary of Exceptions
 程式碰到 try 區塊時
 - try 區塊內發生 exception，程式會跳過整個 try 區塊內還沒執行的程式，尋找適當的 catch 區塊
   - 沒找到適當的 catch 區塊
